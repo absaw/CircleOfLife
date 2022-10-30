@@ -18,6 +18,7 @@ def graph():
             G.add_edge(n_nodes-1,0)
         else:
             G.add_edge(node,node+1)
+    print("Initial No. of edges = ",G.number_of_edges())
 
     #adding edges randomly till degree is less than 3
     addEdge=True
@@ -31,13 +32,13 @@ def graph():
             
             # if 5<node_beg<n_nodes-5:
             endNodeNotFound=True
-            max_tries=20
+            max_tries=10
+            possible_node_list=list(range(node_beg-5,node_beg-1))+list(range(node_beg+2,node_beg+6))
             while endNodeNotFound:
                 max_tries-=1
-                possible_node_list=list(range(node_beg-5,node_beg-1))+list(range(node_beg+2,node_beg+6))
                 node_end=abs(random.choice(possible_node_list))%50
                 # node_end=abs(random.randint(node_beg-5,node_beg+5))%50
-                if G.degree(node_end)<3:
+                if G.degree(node_end)<3 and node_end!=node_beg:
                     endNodeNotFound=False
                     G.add_edge(node_beg,node_end)
                 if max_tries==0:
@@ -46,9 +47,11 @@ def graph():
             # else:
         # if k==20:
             # break
-    # print("No. of edges = ",G.edg)
-
-    # nx.draw_circular(G,with_labels=True)
-    nx.draw(G,with_labels=True)
+    print("No. of edges = ",G.number_of_edges())
+    for node in range(0,G.number_of_nodes()):
+        print("Node - ",node," Degree - ",G.degree(node),"- Neighbors - ",list(G.neighbors(node)))
+        
+    nx.draw_circular(G,with_labels=True)
+    # nx.draw(G,with_labels=True)
     plt.show()
 graph()
