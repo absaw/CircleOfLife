@@ -1,21 +1,24 @@
 from GraphNetworkX import *
 
 def get_bfs_path(G:nx.Graph,start,end):
-    visited_set=set([start])
+    visited_set=set([])
     
     fringe_q=deque([[start]])
     path_found=False
 
-    if start==end:
-        print("Goal reached")
 
-    while fringe_q:
+    while len(fringe_q)>0:
+
+        if start==end:
+            print("Goal reached")
+            path_found=True
+            break
         path = fringe_q.popleft()
         
         curr_node=path[-1]
         
         if curr_node not in visited_set:
-            neighbor_list=G.neighbors(curr_node)
+            neighbor_list=list(G.neighbors(curr_node))
 
             for neighbor in neighbor_list:
                 updated_path=list(path)
@@ -23,19 +26,32 @@ def get_bfs_path(G:nx.Graph,start,end):
                 fringe_q.append(updated_path)
 
                 if neighbor == end:
-                    print("Shortest path=",*updated_path)
+                    print("Shortest path=",updated_path)
                     path_found=True
                     break
-            visited_set.append(curr_node)
+            if path_found:
+                break
+            visited_set.add(curr_node)
 
     if path_found==False:
-        print("Path not found")
+        return path_found,None
+        # print("Path not found")
     
+    return path_found,updated_path
 
 # G=generate_graph(10)
 
-G=nx.graph()
-G.add_edge()
+G=nx.Graph()
+G.add_edge(1,2)
+# G.add_edge(1,3)
+# G.add_edge(1,6)
+G.add_edge(1,5)
+G.add_edge(5,6)
+G.add_edge(6,4)
+G.add_edge(3,4)
+G.add_edge(2,3)
+# G.add_edge(1,4)
+# visualize_graph(G)
 
-get_bfs_path(G,)
+# print(get_bfs_path(G,1,4)[1])
         
