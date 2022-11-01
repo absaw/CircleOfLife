@@ -85,10 +85,14 @@ def generate_graph(n_nodes):
     return G
 
 def visualize_graph(G):
-    nx.draw_circular(G,with_labels=True)
+    plt.figure(figsize=(12,8))
+    pos=nx.circular_layout(G)
+    nx.draw_networkx(G,pos=pos,with_labels=True,edge_color="Green")
+    # nx.draw_circular(G,with_labels=True)
     # nx.draw(G,with_labels=True)
     plt.show()
 
 # def get_shortest_path():
 # for i in range(0,100):
 #     generate_graph(50)
+# generate_graph(50)
