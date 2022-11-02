@@ -2,7 +2,8 @@
 #Variables needed
 from Graph import *
 from BFS import *
-from PreySimulation import *
+from Prey import *
+from Predator import *
 
 def agent_one():
     
@@ -12,7 +13,10 @@ def agent_one():
     
     n_nodes=10
     for sim in range(1,n_sim+1):
-
+        n_win=0     # When agent and prey are in same position, provided pred is not in that position
+        n_lose=0    # When agent and predator are in same position
+        n_hang=0    # When agent can't catch prey, even after walking a certain threshold distance
+        hang_threshold=50
         for trial in range(1,n_trials+1):
 
             #generate graph
@@ -23,7 +27,138 @@ def agent_one():
             prey=Prey(n_nodes,G)
             predator=Predator(n_nodes, G)
 
-            agent_pos=random.randint(1, n_nodes)
+            ag_not_decided=True
+            while ag_not_decided:
+                ag_position=random.randint(1, n_nodes)
+                if ag_position!=prey.position and ag_position != predator.position:
+                    ag_not_decided=False
+
+            path=[]
+            path.append(ag_position)
+            # The three players move in rounds, starting with the Agent, followed by the Prey, and then the Predator.
+            for ag_position in path:
+                
+                # Terminal Condition Check
+                if ag_position==predator.position:
+                    n_lose+=1
+                    print("Agent Dead")
+                    break
+                if ag_position==prey.position:
+                    n_win+=1
+                    print("Goal Reached")
+                    break
+                # Threshold condition
+                if len(path)>hang_threshold:
+                    n_hang+=1
+                    print("Hanged")
+                
+                #Agent starts moving
+                #Agent one simulation
+
+                d_prey=get_bfs_path(G, ag_position, prey.position)      #Distance from prey
+                d_predator=get_bfs_path(G, ag_position, predator.position)  #Distance from predator
+
+                neighbor_list=list(G.neighbors(ag_position))
+                cost_matrix={}
+                for neighbor in neighbor_list:
+                    c_prey=get_bfs_path(G, neighbor, prey.position)
+                    c_predator=get_bfs_path(G, neighbor, predator.position)
+                    cost_matrix[neighbor]=[c_prey,c_predator]
+                l1=[]
+                for neighbor in neighbor_list:
+                    if cost_matrix[neighbor][0]<d_prey and cost_matrix[neighbor][1]>d_predator:
+                        l1.append(neighbor)
+                
+                if not l1:
+                    
+                    l2=[]
+                    for neighbor in neighbor_list:
+                        if cost_matrix[neighbor][0]<d_prey and cost_matrix[neighbor][1]==d_predator:
+                            l2.append(neighbor)
+
+                    if not l2:
+                        l3=[]
+                        for neighbor in neighbor_list:
+                            if cost_matrix[neighbor][0]==d_prey and cost_matrix[neighbor][1]>d_predator:
+                                l3.append(neighbor)
+                        
+                        if not l3:
+                            l4=[]
+                            for neighbor in neighbor_list:
+                                if cost_matrix[neighbor][0]==d_prey and cost_matrix[neighbor][1]==d_predator:
+                                    l4.append(neighbor)
+                            
+                            if not l4:
+                                l5=[]
+                                for neighbor in neighbor_list:
+                                    if cost_matrix[neighbor]>d_predator:
+                                        l5.append(neighbor)
+                                
+                                if not l5:
+                                    l6=[]
+                                    for neighbor in neighbor_list:
+                                        if cost_matrix[neighbor][1]==d_predator:
+                                            l6.append(neighbor)
+
+                                    if not l6:
+                                        #sit still and pray
+                                        next_position=ag_position
+                                    else:
+                                        next_position=random.choice(l6)
+
+                                else:
+                                    next_position=random.choice(l5)
+
+                            else:
+                                next_position=random.choice(l4)
+
+                        else:
+                            next_position=random.choice(l3)
+
+                    else:
+                        next_position=random.choice(l2)
+
+                else:
+                    next_position=random.choice(l1)
+                
+                #now we have our agent's next position
+
+                #we will now simulate prey
+
+                prey.simulate_step()
+
+                #we will now simulate predator
+                predator.simulate_step(next_position)
+
+                # Terminal Condition Check
+                if ag_position==predator.position:
+                    n_lose+=1
+                    print("Agent Dead")
+                    break
+                if ag_position==prey.position:
+                    n_win+=1
+                    print("Goal Reached")
+                    break
+
+                path.append(next_position)
+
+
+                            
+                
+
+
+
+
+                
+
+
+
+
+
+                
+
+
+
 
 
 
