@@ -19,7 +19,7 @@ def generate_graph(n_nodes):
         G.add_node(node)
     
     node_list=list(G.nodes())
-    print("Node list : ",node_list)
+    # print("Node list : ",node_list)
     #adding initial edges
 
     for node in range(1,n_nodes+1):
@@ -27,7 +27,7 @@ def generate_graph(n_nodes):
             G.add_edge(n_nodes,1)
         else:
             G.add_edge(node,node+1)
-    print("Initial No. of edges = ",G.number_of_edges())
+    # print("Initial No. of edges = ",G.number_of_edges())
     # visualize_graph(G)
     #adding edges randomly till degree is less than 3
     addEdge=True
@@ -90,8 +90,8 @@ def generate_graph(n_nodes):
         
 
     # print("No. of edges = ",G.number_of_edges())
-    # for node in range(0,G.number_of_nodes()):
-        # print("Node - ",node," Degree - ",G.degree(node),"- Neighbors - ",list(G.neighbors(node)))
+    # for node in range(1,n_nodes+1):
+    #     print("Node - ",node," Degree - ",G.degree(node),"- Neighbors - ",list(G.neighbors(node)))
         
     # visualize_graph(G)
     return G
