@@ -91,17 +91,19 @@ def generate_graph(n_nodes):
 
     # print("No. of edges = ",G.number_of_edges())
     # for node in range(1,n_nodes+1):
-    #     print("Node - ",node," Degree - ",G.degree(node),"- Neighbors - ",list(G.neighbors(node)))
+    #     nlist=list(G.neighbors(node))
+    #     nlist.sort()
+        # print("Node - ",node," Degree - ",G.degree(node),"- Neighbors - ",nlist)
         
     # visualize_graph(G)
     return G
 
 def visualize_graph(G):
-    plt.figure(figsize=(12,8))
-    pos=nx.circular_layout(G)
-    nx.draw_networkx(G,pos=pos,with_labels=True,edge_color="Green")
+    plt.figure(figsize=(8,6))
+    # pos=nx.circular_layout(G)
+    # nx.draw_networkx(G,pos=pos,with_labels=True,edge_color="Green")
     # nx.draw_circular(G,with_labels=True)
-    # nx.draw(G,with_labels=True)
+    nx.draw(G,with_labels=True)
     plt.show()
 
 # def get_shortest_path():

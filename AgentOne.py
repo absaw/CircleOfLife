@@ -11,12 +11,14 @@ def agent_one():
     n_trials=100    # No. of Trials. Each trial has a random new graph. Final Metrics of one simulation will be calculated from these 100 trials
                     # We then average out the metrics, from the 30 simulations we have, to eventually get the final results.
     
-    n_nodes=10
+    n_nodes=50
+    win_list=[]
+    lose_list=[]
     for sim in range(1,n_sim+1):
         n_win=0     # When agent and prey are in same position, provided pred is not in that position
         n_lose=0    # When agent and predator are in same position
         n_hang=0    # When agent can't catch prey, even after walking a certain threshold distance
-        hang_threshold=50
+        hang_threshold=100
         for trial in range(1,n_trials+1):
 
             #generate graph
@@ -41,28 +43,28 @@ def agent_one():
                 # Terminal Condition Check
                 if ag_position==predator.position:
                     n_lose+=1
-                    print("Agent Dead")
+                    # print("Agent Dead")
                     break
                 if ag_position==prey.position:
                     n_win+=1
-                    print("Goal Reached")
+                    # print("Goal Reached")
                     break
                 # Threshold condition
                 if len(path)>hang_threshold:
                     n_hang+=1
-                    print("Hanged")
+                    # print("Hanged")
                 
                 #Agent starts moving
                 #Agent one simulation
 
-                d_prey=get_bfs_path(G, ag_position, prey.position)      #Distance from prey
-                d_predator=get_bfs_path(G, ag_position, predator.position)  #Distance from predator
+                d_prey=get_bfs_path(G, ag_position, prey.position)[1]      #Distance from prey
+                d_predator=get_bfs_path(G, ag_position, predator.position)[1]  #Distance from predator
 
                 neighbor_list=list(G.neighbors(ag_position))
                 cost_matrix={}
                 for neighbor in neighbor_list:
-                    c_prey=get_bfs_path(G, neighbor, prey.position)
-                    c_predator=get_bfs_path(G, neighbor, predator.position)
+                    c_prey=get_bfs_path(G, neighbor, prey.position)[1]
+                    c_predator=get_bfs_path(G, neighbor, predator.position)[1]
                     cost_matrix[neighbor]=[c_prey,c_predator]
                 l1=[]
                 for neighbor in neighbor_list:
@@ -91,7 +93,7 @@ def agent_one():
                             if not l4:
                                 l5=[]
                                 for neighbor in neighbor_list:
-                                    if cost_matrix[neighbor]>d_predator:
+                                    if cost_matrix[neighbor][1]>d_predator:
                                         l5.append(neighbor)
                                 
                                 if not l5:
@@ -133,16 +135,28 @@ def agent_one():
                 # Terminal Condition Check
                 if ag_position==predator.position:
                     n_lose+=1
-                    print("Agent Dead")
+                    # print("Agent Dead")
                     break
                 if ag_position==prey.position:
                     n_win+=1
-                    print("Goal Reached")
+                    # print("Goal Reached")
                     break
 
                 path.append(next_position)
 
+        # print("Sim -> ", sim)
+        # print("Alive ->",n_win)       
+        # print("Dead ->",n_lose)       
+        # print("Hang ->",n_hang)       
+        # print()
+        win_list.append(n_win)
+        lose_list.append(n_lose)
+    print("Win List : ",*win_list)
+    print("Lose List : ",*lose_list)
+    print("Average wins : ",(sum(win_list)/len(win_list)))
+    print("Average losses : ",(sum(lose_list)/len(lose_list)))
 
+agent_one()
                             
                 
 

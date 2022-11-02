@@ -10,8 +10,9 @@ def get_bfs_path(G:nx.Graph,start,end):
     while len(fringe_q)>0:
 
         if start==end:
-            print("Goal reached")
+            # print("Goal reached")
             path_found=True
+            updated_path=[start]
             break
         path = fringe_q.popleft()
         
@@ -26,7 +27,7 @@ def get_bfs_path(G:nx.Graph,start,end):
                 fringe_q.append(updated_path)
 
                 if neighbor == end:
-                    print("Shortest path=",updated_path)
+                    # print("Shortest path=",updated_path)
                     path_found=True
                     break
             if path_found:

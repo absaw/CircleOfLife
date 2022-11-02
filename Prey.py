@@ -6,7 +6,7 @@ class Prey:
     
     def __init__(self,n_nodes,G : nx.Graph):
         self.n_nodes=n_nodes
-        self.position=random.randint(0,n_nodes-1)
+        self.position=random.randint(1,n_nodes)
         self.G=G
     
     def simulate_step(self):
@@ -16,6 +16,20 @@ class Prey:
         self.position=next_pos
         return next_pos
             
+#Testing prey
+if __name__=="__main__":
+    G=generate_graph(50)
+    p=Prey(50, G)
+    print("Init Pos ->",p.position)
+    print("Neighbors -> ",*list(G.neighbors(p.position)))
+    print()
+    for i in range(1,101):
+        p.simulate_step()
+        print("i = ",i," - Prey = ",p.position)
+        print("Neighbors -> ",*list(G.neighbors(p.position)))
+        print()
+
+
 
 
 
