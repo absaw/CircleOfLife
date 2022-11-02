@@ -1,54 +1,110 @@
+from math import degrees
+from turtle import pos
 import networkx as nx
 import matplotlib.pyplot as plt
-class Graph:
-    def __init__(self,n_nodes):
-        self.n_nodes=n_nodes
-        self.node_list=range(1,n_nodes+1)
-        self.edge_list=[]
-        self.node_properties={}
-        for node in self.node_list:
-            self.node_properties[node]={"neighbors":[],"probability":[]}
+import random
+from collections import deque
+
+
+#Generate a graph with n_nodes. Max degree = 3. Nodes are numbered from 1 to n_nodes(i.e. 50)
+
+def generate_graph(n_nodes):
+    # n_nodes=50
     
-    def add_edges(self,n_beg,n_end):
-        #undirected graph so adding in both adjancency lists
-        self.node_properties[n_beg]["neighbors"].append(n_end)
-        self.node_properties[n_end]["neighbors"].append(n_beg)
-        self.edge_list.append((n_beg,n_end))
+    G=nx.Graph()
     
-    def get_edge_list(self):
-        return self.edge_list
+    #add nodes to the graph
+
+    for node in range(1,n_nodes+1):
+        G.add_node(node)
     
-    def print_adj_dict(self):
-        for key in self.node_properties:
-            print(key,", ",self.node_properties[key]["neighbors"])
+    node_list=list(G.nodes())
+    print("Node list : ",node_list)
+    #adding initial edges
 
-    def get_node_degree(self,node):
-        return self.node_properties[node]["neighbors"].count
-    
-    def visualize_graph(self):
-        G = nx.Graph()
-        G.add_edges_from(self.edge_list)
-        nx.draw_networkx(G)
-        plt.show()
+    for node in range(1,n_nodes+1):
+        if node==n_nodes:
+            G.add_edge(n_nodes,1)
+        else:
+            G.add_edge(node,node+1)
+    print("Initial No. of edges = ",G.number_of_edges())
+    # visualize_graph(G)
+    #adding edges randomly till degree is less than 3
+    addEdge=True
+    k=0
+    while len(node_list)>0:
+        # print(len(node_list))
+        # if len(node_list)<=5:
+            # print("here")
+            # visualize_graph(G)
+        # k+=1
+    # for node_beg in range(0,n_nodes):
+        # node_beg=random.randint(0,n_nodes)
+        node_beg=random.choice(node_list)
+        
+        possible_node_list=list(range(node_beg-5,node_beg-1))+list(range(node_beg+2,node_beg+6))
+        for i in range(len(possible_node_list)):
+            if possible_node_list[i]==0:
+                possible_node_list[i]=n_nodes  #when node =0, then since the nodes are connected cirularly, the 0th node becomes 
+                                               #last node. This separate 0 condition is used since mod function doesn't work with 0
+            elif possible_node_list[i]<0 or possible_node_list[i]>n_nodes:
+                possible_node_list[i]=possible_node_list[i]%n_nodes
 
-    
-class Node:
-    def __init__(self,id,adjacent_node_list):
-        self.id=id
-        self.adjacent_node_list=adjacent_node_list
+        # print(" Node  ",node_beg)
+        # print("Possible Node List ",possible_node_list)
+        
+        if G.degree(node_beg)<3:
+            possible_node_list_copy=possible_node_list.copy()
+            for node in possible_node_list:
+                if G.degree(node)>=3:
+                    possible_node_list_copy.remove(node)
+            if not possible_node_list_copy:
+                node_list.remove(node_beg)
+                continue
+            possible_node_list=possible_node_list_copy
 
+            #if list is empty
+            
+            # if 5<node_beg<n_nodes-5:
+            # endNodeNotFound=True
+            # max_tries=10
+            # while endNodeNotFound:
+                # max_tries-=1
+            node_end=random.choice(possible_node_list)
+            # node_end=abs(random.randint(node_beg-5,node_beg+5))%50
+            if G.degree(node_end)<3 and node_end!=node_beg:
+                # endNodeNotFound=False
+                G.add_edge(node_beg,node_end)
+                node_list.remove(node_beg)
+                node_list.remove(node_end)
+            # elif G.degree(node_end)>=3:
+            #     node_list.remove(node_end)
+            # if max_tries==0:
+            #     break
+            
+            # else:
+        # if k==20:
+            # break
+        else:
+            node_list.remove(node_beg)
+        
 
-# g = Graph(3)
-# g.add_edges(1,2)
-# g.add_edges(1,3)
-# g.print_adj_dict()
-# g.visualize_graph()
+    # print("No. of edges = ",G.number_of_edges())
+    # for node in range(0,G.number_of_nodes()):
+        # print("Node - ",node," Degree - ",G.degree(node),"- Neighbors - ",list(G.neighbors(node)))
+        
+    # visualize_graph(G)
+    return G
 
-def circle():
+def visualize_graph(G):
+    plt.figure(figsize=(12,8))
+    pos=nx.circular_layout(G)
+    nx.draw_networkx(G,pos=pos,with_labels=True,edge_color="Green")
+    # nx.draw_circular(G,with_labels=True)
+    # nx.draw(G,with_labels=True)
+    plt.show()
 
-    n_nodes=10
-    g = Graph(3)
-    g.add_edges(1,2)
-    g.add_edges(1,3)
-    g.print_adj_dict()
-    g.visualize_graph()
+# def get_shortest_path():
+# for i in range(0,100):
+#     generate_graph(50)
+# generate_graph(50)
