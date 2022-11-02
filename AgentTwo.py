@@ -3,7 +3,7 @@ from BFS import *
 from Prey import *
 from Predator import *
 
-class AgentOne:
+class AgentTwo:
     
     def __init__(self,n_nodes,G : nx.Graph,prey:Prey, predator:Predator):
         self.n_nodes=n_nodes
@@ -46,18 +46,18 @@ class AgentOne:
                     l2.append(neighbor)
 
             if not l2:
-                l3=[]
-                for neighbor in neighbor_list:
-                    if cost_matrix[neighbor][0]==d_prey and cost_matrix[neighbor][1]>d_predator:
-                        l3.append(neighbor)
+                # l3=[]
+                # for neighbor in neighbor_list:
+                #     if cost_matrix[neighbor][0]==d_prey and cost_matrix[neighbor][1]>d_predator:
+                #         l3.append(neighbor)
                 
-                if not l3:
-                    l4=[]
-                    for neighbor in neighbor_list:
-                        if cost_matrix[neighbor][0]==d_prey and cost_matrix[neighbor][1]==d_predator:
-                            l4.append(neighbor)
+                # if not l3:
+                #     l4=[]
+                #     for neighbor in neighbor_list:
+                #         if cost_matrix[neighbor][0]==d_prey and cost_matrix[neighbor][1]==d_predator:
+                #             l4.append(neighbor)
                     
-                    if not l4:
+                    # if not l4:
                         l5=[]
                         for neighbor in neighbor_list:
                             if cost_matrix[neighbor][1]>d_predator:
@@ -70,19 +70,19 @@ class AgentOne:
                                     l6.append(neighbor)
 
                             if not l6:
-                                #sit still and pray
-                                next_position=self.position
+                                #select randomly from all neighbors or current position
+                                next_position=random.choice([self.position]+neighbor_list)
                             else:
                                 next_position=random.choice(l6)
 
                         else:
                             next_position=random.choice(l5)
 
-                    else:
-                        next_position=random.choice(l4)
+                #     else:
+                #         next_position=random.choice(l4)
 
-                else:
-                    next_position=random.choice(l3)
+                # else:
+                #     next_position=random.choice(l3)
 
             else:
                 next_position=random.choice(l2)

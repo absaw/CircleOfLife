@@ -18,15 +18,15 @@ class Prey:
             
 #Testing prey
 if __name__=="__main__":
-    self.G=generate_graph(50)
-    p=Prey(50, self.G)
+    G=generate_graph(50)
+    p=Prey(50, G)
     print("Init Pos ->",p.position)
-    print("Neighbors -> ",*list(self.G.neighbors(p.position)))
+    print("Neighbors -> ",*list(G.neighbors(p.position)))
     print()
     for i in range(1,101):
         p.simulate_step()
         print("i = ",i," - Prey = ",p.position)
-        print("Neighbors -> ",*list(self.G.neighbors(p.position)))
+        print("Neighbors -> ",*list(G.neighbors(p.position)))
         print()
 
 
