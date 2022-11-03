@@ -11,6 +11,7 @@ class Prey:
     
     def simulate_step(self):
         neighbor_list=list(self.G.neighbors(self.position))
+        degree=self.G.degree(self.position)
         next_pos=random.choice(neighbor_list+[self.position])
         self.position=next_pos
         return next_pos
