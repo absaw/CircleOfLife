@@ -37,7 +37,7 @@ class AgentOne:
         for neighbor in neighbor_list:
             if cost_matrix[neighbor][0]<d_prey and cost_matrix[neighbor][1]>d_predator:
                 l1.append(neighbor)
-        
+
         if not l1:
             
             l2=[]
@@ -74,20 +74,28 @@ class AgentOne:
                                 next_position=self.position
                             else:
                                 next_position=random.choice(l6)
+                                #print(l6)
 
                         else:
                             next_position=random.choice(l5)
+                            #print(l5)
+
 
                     else:
                         next_position=random.choice(l4)
+                        #print(l4)
 
                 else:
                     next_position=random.choice(l3)
+                    #print(l3)
 
             else:
                 next_position=random.choice(l2)
+                #print(l2)
 
         else:
             next_position=random.choice(l1)
+            #print(l1)
+
         
         self.position=next_position

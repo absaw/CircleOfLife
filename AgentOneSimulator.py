@@ -7,7 +7,7 @@ from Predator import *
 from AgentOne import *
 def simulate_agent_one():
     
-    n_sim=30      # No. of simulations
+    n_sim=30    # No. of simulations
     n_trials=100    # No. of Trials. Each trial has a random new graph. Final Metrics of one simulation will be calculated from these 100 trials
                     # We then average out the metrics, from the 30 simulations we have, to eventually get the final results.
     
