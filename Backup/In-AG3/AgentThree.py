@@ -2,9 +2,7 @@ from Graph import *
 from BFS import *
 from Prey import *
 from Predator import *
-from AgentOne import *
-import copy
-from CallableAgentOneFunction import *
+
 class AgentThree:
     
     def __init__(self,n_nodes,G : nx.Graph,prey:Prey, predator:Predator):
@@ -31,34 +29,50 @@ class AgentThree:
         #Agent is only aware of the predator's position. so we can only effectively use its value
         #Prey's position here is only used to check if the surveyed node is the prey's node or not
 
+        # d_predator=len(get_bfs_path(self.G, self.position, predator.position)[1])  #Distance from predator
+
+        # neighbor_list=list(self.G.neighbors(self.position))
+   
+        # self.initialize_probabilities()
+        
+        # self.print_state()
+
         prey_found=False
-       
+        # while(not prey_found):
+        #randomly survey a node
+        # if prey.position==self.position:
+        #     print("Prey found sim step 1")
+        #     prey_found=True
+        #     return
+        
+        
+        # survey_node=5
         # Belief update based on surveyed node
         self.update_belief(survey_node, prey.position)
         # self.print_state()
 
         #Agent moves towards the highest prob_now node of prey with rules of agent One
         #call agent one now!
-        G_copy=copy.deepcopy(self.G)
-        
         m=max(self.p_now)
         max_prob_list=[node+1 for node in range(len(self.p_now)) if self.p_now[node]==m]
-        prey_virtual_location=random.choice(max_prob_list)
-        
-        virtul_prey=Prey(self.n_nodes,self.G)
-        virtul_prey.position=prey_virtual_location
-        
-        ag_one=AgentOne(self.n_nodes, self.G, virtul_prey, self.predator)
-        ag_one.simulate_step(virtul_prey, self.predator)
-        self.position=ag_one.position
-        # self.position=agent_one_simulate_step(G_copy, self.position, prey_virtual_location, self.predator.position)
+        target_node=random.choice(max_prob_list)
 
-        # path_to_target=get_bfs_path(self.G, self.position, prey_virtual_location)[1]
-        # self.position=path_to_target[1]
+        path_to_target=get_bfs_path(self.G, self.position, target_node)[1]
 
-        #Agent has now moved to the new position, according to agent 1's behaviour
+        self.position=path_to_target[1]
+        #Agent has now moved to the new position
+        #Has agent reached the prey and won?
+        # if self.position==prey.position:
+        #     print("Prey found sim step 2")
+        #     prey_found=True
+        #     return
         #If not won, update belief system again
         self.update_belief(self.position, prey.position)
+        # self.print_state()
+
+        # #Now prey will move
+        # prey.simulate_step()
+    
     
 
     def update_belief(self,survey_node,prey_positon):
@@ -70,14 +84,13 @@ class AgentThree:
             for node in range(1,51):
                 if node!=survey_node:
                     self.p_now[node-1]=0
-            # self.print_state()
-            #######self.transition_update()
-            # self.print_state()
-            # print("\n\n\n\nAfter locating prey transition updates P_now-> ",*self.p_now)
-            # print("After locating prey P_next-> ",*self.p_next)
-            # self.p_now=self.p_next.copy()
+            
+            self.transition_update()
+            self.p_now=self.p_next
+            print("After locating prey transition updates P_now-> ",*self.p_now)
+            print("After locating prey P_next-> ",*self.p_next)
         else:
-            # print("Survey node:",survey_node)
+            print("Survey node:",survey_node)
             p_new=[0]*50
             p_prey_not_in_survey_node=1-self.p_now[survey_node-1]
             # self.p_next[survey_node-1]=0
@@ -88,19 +101,18 @@ class AgentThree:
                     p_new[node-1]=p_prey_in_current_node/p_prey_not_in_survey_node
             
             #updating current belief system
-            self.p_now=p_new.copy()
+            self.p_now=p_new
             # Survey is done. We have updated our beliefs based on current info. Now we 
             # estimate which could be the next best step to take. So that's why we need
             # transition probability update which will change the probability of each
             # node, to reflect, the probability of the prey being there in the next
             # step. Thus giving our agent an idea of moving to which direction next
             #Now updating next belief system
-            
-            ####self.transition_update()
-            #### self.p_now=self.p_next.copy()
-            
+            self.transition_update()
+            self.p_now=self.p_next
             #P_now contains existing prob system
             #P_next contains the belief system possible for next step
+            # self.p_next=self.p_now
 
     def transition_update(self):
         for survey_node in range(1,self.n_nodes+1):
@@ -136,12 +148,6 @@ class AgentThree:
         print()
         print("P_next -> ",self.p_next)
         print("\n")
-    def print_sum(self):
-        print("Sum of P_now : ",sum(self.p_now))
-        print("Sum of P_next : ",sum(self.p_next))
-
-
-
     
         
     
@@ -152,30 +158,27 @@ if __name__=="__main__":
     # prey.position=6
     predator=Predator(n_nodes, G)
     agent_three=AgentThree(n_nodes, G, prey, predator)
-    survey_list=list(range(1,51))
-    survey_list.remove(agent_three.position)
-    survey_node=random.choice(survey_list)
-    print("Initial Condtion -> ")
-    agent_three.print_state()
     # agent_three.simulate_step(prey, predator)
-    for i in range(1,101):
+    for i in range(0,100):
     # while(True):
-        print("i = ",i)
         if agent_three.position==prey.position:
             print("Prey found main")
             break
-        
-        agent_three.simulate_step(survey_node,prey, predator)
-        agent_three.print_state()
-        m=max(agent_three.p_now)
-        survey_list=[node+1 for node in range(len(agent_three.p_now)) if agent_three.p_now[node]==m]
+        survey_list=list(range(1,51))
+        survey_list.remove(agent_three.position)
         survey_node=random.choice(survey_list)
-
+        
+        agent_three.simulate_step(prey, predator)
+        agent_three.print_state()
 
     # agent_three.print_state()
     # for i in range(0,10):
     #     agent_three.transition_update()
     #     agent_three.print_state()
+
+    
+
+
 
 
 # def transition_update(self,survey_node):
