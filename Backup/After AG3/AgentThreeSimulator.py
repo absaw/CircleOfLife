@@ -32,10 +32,13 @@ def simulate_agent_three():
             G=GraphClass.G
 
             #spawn prey, predator and agent at random locations
+
             prey=Prey(n_nodes,G)
             predator=Predator(n_nodes, G)
             agent_three=AgentThree(n_nodes, G, prey, predator)
             
+            # path=[]
+            # path.append(agent_three.position)
             steps=0
             survey_list=list(range(1,51))
             survey_list.remove(agent_three.position)
@@ -44,7 +47,6 @@ def simulate_agent_three():
             while(steps<=max_steps):
                 steps+=1
                 # print("\n\nStep ->>>>> ",steps)
-                # agent_three.print_state()
                 # ========= Terminal Condition Check  ========
                 if agent_three.position==predator.position:
                     n_lose+=1
@@ -62,30 +64,36 @@ def simulate_agent_three():
                
                 #========= Agent Three Simulation  ========
                 agent_three.simulate_step(survey_node,prey, predator)
+                # print("\n\nAfter Agent Step")
+                #agent_three.print_sum()
                 # Now we have our agent's next position
                 # ========= Terminal Condition Check  ========
                 if agent_three.position==predator.position:
                     n_lose+=1
+                    # print("Agent Dead")
                     break
                 if agent_three.position==prey.position:
                     n_win+=1
                     n_steps+=steps
+                    # print("Goal Reached")
                     break
 
                 # ======== Prey Simulation   =========
                 prey.simulate_step()
-                # New Info : Prey has moved. So update apply transition probability update to each node in graph
                 agent_three.transition_update()
                 agent_three.p_now=agent_three.p_next.copy()
+                # print("\n\nAfter Prey step")
                 #agent_three.print_sum()
 
                 #========= Terminal Condition Check  ========
                 if agent_three.position==prey.position:
+                    # print("Prey found")
                     n_win+=1
                     n_steps+=steps
                     break
-                # New Info : Prey is not in current agent's position. So update belief system
+                # New Info:Prey is not in current agent's position. So update belief system
                 agent_three.update_belief(agent_three.position, prey.position)
+                # print("\n\nAfter Prey not found and belief update")
                 
                 #agent_three.print_sum()
                 
@@ -101,11 +109,17 @@ def simulate_agent_three():
                     n_steps+=steps
                     break
 
-                m=max(agent_three.p_now) #finding value with highest prob
-                survey_list=[node+1 for node in range(len(agent_three.p_now)) if agent_three.p_now[node]==m] # List of nodes with highest prob value
-                survey_node=random.choice(survey_list) #Selecting a random element from highest prob value list
+                m=max(agent_three.p_now)
+                survey_list=[node+1 for node in range(len(agent_three.p_now)) if agent_three.p_now[node]==m]
+                survey_node=random.choice(survey_list)
 
+                # path.append(next_position)
 
+        # print("Sim -> ", sim)
+        # print("Alive ->",n_win)       
+        # print("Dead ->",n_lose)       
+        # print("Hang ->",n_hang)       
+        # print()
         win_list.append(n_win)
         lose_list.append(n_lose)
         hang_list.append(n_hang)
