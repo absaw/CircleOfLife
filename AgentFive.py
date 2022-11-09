@@ -25,40 +25,40 @@ class AgentFive:
 
     def simulate_step(self,survey_node,prey : Prey,predator:Predator):
         # Simulate step will perform following actions:-
-        # 1. Update belief system for finding/not finding prey at current survey node
+        # 1. Update belief system for finding/not finding predator at current survey node
         # 2. Move agent to next highest prob value neighbor by rules of Agent 1
-        # 3. Update belief system for finding/not finding prey at new position
+        # 3. Update belief system for finding/not finding predator at new position
 
-        #Prey's position here is only used to check if the surveyed node is the prey's node or not
+        #Prey's position here is only used to check if the surveyed node is the predator's node or not
        
         # 1. Belief update based on surveyed node
-        self.update_belief(survey_node, prey.position)
+        self.update_belief(survey_node, predator.position)
         G_copy=copy.deepcopy(self.G)
         
         m=max(self.p_now)
         max_prob_list=[node+1 for node in range(len(self.p_now)) if self.p_now[node]==m]
-        prey_virtual_location=random.choice(max_prob_list)
+        predator_virtual_location=random.choice(max_prob_list)
         
-        virtual_prey=Prey(self.n_nodes,self.G)
-        virtual_prey.position=prey_virtual_location
+        virtual_predator=Predator(self.n_nodes,self.G)
+        virtual_predator.position=predator_virtual_location
         
-        #2. Agent moves towards the highest prob_now node of prey with rules of agent One
-        ag_one=AgentOne(self.n_nodes, self.G, virtual_prey, self.predator)
+        #2. Agent moves towards the highest prob_now node of predator with rules of agent One
+        ag_one=AgentOne(self.n_nodes, self.G, self.prey, virtual_predator)
         ag_one.position=self.position
-        ag_one.simulate_step(virtual_prey, self.predator)
+        ag_one.simulate_step(self.prey, virtual_predator)
         self.position=ag_one.position
         
         #Agent has now moved to the new position, according to agent 1's behaviour
         # 3. Update belief system again
-        self.update_belief(self.position, prey.position)
+        self.update_belief(self.position, predator.position)
     
 
-    def update_belief(self,survey_node,prey_positon):
+    def update_belief(self,survey_node,predator_position):
         # Update belief changes the probability of the nodes based on the belief system 
-        # 1. If prey was found at survey node--set P_now(survey_node)=1
-        # 2. If prey was not found at survey node--set P_now(survey_node)=0, for each X out of nodes, P(X)=P(prey in the node X)*P(prey not in survey node|prey in the node X)/P(prey not in survey node)
+        # 1. If predator was found at survey node--set P_now(survey_node)=1
+        # 2. If predator was not found at survey node--set P_now(survey_node)=0, for each X out of nodes, P(X)=P(predator in the node X)*P(predator not in survey node|predator in the node X)/P(predator not in survey node)
         
-        if survey_node==prey_positon:
+        if survey_node==predator_position:
             #1. Prey found scenario
             self.p_now[survey_node-1]=1
             #set prob of all other nodes to 0
@@ -69,34 +69,123 @@ class AgentFive:
         else:
             #2. Prey not found scenario
             p_new=[0]*50
-            p_prey_not_in_survey_node=1-self.p_now[survey_node-1]
+            p_predator_not_in_survey_node=1-self.p_now[survey_node-1]
             for node in range(1,51):
                 if node!=survey_node:
-                    p_prey_in_current_node=self.p_now[node-1]
-                    p_new[node-1]=p_prey_in_current_node/p_prey_not_in_survey_node
+                    p_predator_in_current_node=self.p_now[node-1]
+                    p_new[node-1]=p_predator_in_current_node/p_predator_not_in_survey_node
             
             self.p_now=p_new.copy()
 
+    #simplified transition update
     def transition_update(self):
-        # This updates the prob of all nodes, for when the prey moves in the graph
-        distance_list=[0]*50
-        for node in range(1,self.n_nodes+1):
-            distance_list[node-1]=get_bfs_path(G, node, self.position)
-        
-        for survey_node in range(1,self.n_nodes+1):
-            set_next_prob_list=list(self.G.neighbors(survey_node))
+        # Example Graph
+        # A --- B
+        # |  /  |
+        # C --- D
+        #   \ /
+        #    E
+        # 
+        # Suppose Update Node=C, Agent is at E
+        for update_node in range(1,self.n_nodes+1): # C
+            neighbors_of_update_node=list(self.G.neighbors(update_node)) # [A,B,D,E]
 
-            for node in set_next_prob_list:
-                set_next_prob_list_neighbor=list(self.G.neighbors(node))+[node]
-                p_node_2=0
-                for node_2 in set_next_prob_list_neighbor:
+            p_update_node=0
+
+            for neighbor_of_update_node in neighbors_of_update_node:# neighbor_of_update_node=A,B,D,E
+                degree_of_neighbor_of_update_node=self.G.degree(neighbor_of_update_node)
+                p_update_node+=(0.4)*self.p_now[neighbor_of_update_node-1]/degree_of_neighbor_of_update_node
+                ### 0.4 component done###
+                
+                ### Beginning 0.6 component ###
+                # N1 - neighbor of update node = Suppose B
+                # N2 - neighbor of N1 = Neighbors of B = A,C,D
+                # Shift to Perspective of neighbor - N1 = B
+
+                # Calc. dist to agent for each neighbor of N1 = i.e. Neighbor of B
+
+                neighbors_of_n1=list(self.G.neighbors(neighbor_of_update_node))
+                distance_to_agent_list=[]
+                for neighbor_of_n1 in neighbors_of_n1:
+                    distance_to_agent=len(get_bfs_path(G, neighbor_of_n1, self.position)[1])
+                    distance_to_agent_list.append(distance_to_agent)
+                min_distance_to_agent=min(distance_to_agent_list)
+                
+                min_distance_neighbors=[]
+                #now we generate min_distance_neighbors of B
+                for neighbor_of_n1_index in range(len(neighbors_of_n1)):
+                    if min_distance_to_agent==distance_to_agent_list[neighbor_of_n1_index]:
+                        min_distance_neighbors.append(neighbors_of_n1[neighbor_of_n1_index])
+
+                # Now we have the neighbors of N1 which are at the least from agent
+                # Example Graph
+                # A --- B
+                # |  /  |
+                # C --- D
+                #   \ /
+                #    E
+                # To sum up the variable values at this point:---
+                # Update_Node=C, Agent at E
+                # When neighbor_of_update_node=B
+                # Neighbors_of_n1=A,C,D
+                # distance_to_agent_list=[2,1,1]
+                # min_distance_to_agent=1
+                # min_distance_neighbors=C,D
+                # If the update node C is in the shortest path towards agent, it will be in the min_dist_neighbor list.
+                # So we can consider that predator may enter C. Thought the chances will be equally divided among the min
+                # dist neighbors. So we divide the chance by the no. of min distance neighbors
+                #   p=p_of_neighbor_of_update_node/no. of shortest path neighbors
+                if update_node in min_distance_neighbors:
+                    p_update_node+=(0.6)*(self.p_now[neighbor_of_update_node-1]/len(min_distance_neighbors))
+        
+            self.p_next[update_node-1]=p_update_node
+
+            #1st component done
+
+    #Unused transition update--to complex
+    def transition_update_old_unused(self):
+        # This updates the prob of all nodes, for when the predator moves in the graph
+        # distance_list=[0]*50
+        # for node in range(1,self.n_nodes+1):
+        #     distance_list[node-1]=get_bfs_path(G, node, self.position)
+        
+        for survey_node in range(1,self.n_nodes+1): # C
+            set_next_prob_list=list(self.G.neighbors(survey_node)) # [A,B,D,E]
+
+            p_node=0
+            for node in set_next_prob_list:# node=A,B,D,E
+                
+                set_next_prob_list_neighbor=list(self.G.neighbors(node))#Neighbors of A = B,C
+                node_2_neighbor_dist_to_agent=[]
+
+                for node_2 in set_next_prob_list_neighbor:# node_2=B,C
+                    # print(node_2)
                     if self.G.degree(node_2)==3:
                         multiplier=3
                     else:
                         multiplier=2
-                    p_node_2+=(0.4)*(self.p_now[node_2-1]/multiplier)+
+                    p_node+=(0.4)*(self.p_now[node_2-1]/multiplier)
+
+                    node_2_neighbor_dist_to_agent.append(len(get_bfs_path(G,node_2, self.position)[1]))# Distances of B and C from Agent #Appending (node,distance to agent) tuple to list
+
+                min_dist_to_agent=min(node_2_neighbor_dist_to_agent)
+
+                #min_dist_to_agent = 2
+                #set_next_prob_list_neighbor=[B,C]
+                #node_2_neighbor_dist_to_agent=[2,1]
+                #min_dist_list=[1]
+                min_dist_list=[]
+                for n_i in range(len(node_2_neighbor_dist_to_agent)):
+                    if min_dist_to_agent==node_2_neighbor_dist_to_agent[n_i]:
+                        min_dist_list.append(set_next_prob_list_neighbor[n_i])
+
+
+                # min_dist_list=[set_next_prob_list_neighbor[node_index] for node_index in node_2_neighbor_dist_to_agent if node_2_neighbor_dist_to_agent[node_index]==min_dist_to_agent]
+
+                if node in min_dist_list:
+                    p_node+=(0.6)*(self.p_now[node-1]/len(min_dist_list))
                 
-                self.p_next[node-1]=p_node_2
+            self.p_next[node-1]=p_node
 
     def initialize_probabilities(self):
         #Initialize all prob to 1/49
@@ -139,24 +228,24 @@ if __name__=="__main__":
     # prey.position=6
     predator=Predator(n_nodes, G)
     agent_five=AgentFive(n_nodes, G, prey, predator)
-    survey_list=list(range(1,51))
-    survey_list.remove(agent_five.position)
-    survey_node=random.choice(survey_list)
-    print("Initial Condtion -> ")
-    agent_five.print_state()
+    # survey_list=list(range(1,51))
+    # survey_list.remove(agent_five.position)
+    # survey_node=random.choice(survey_list)
+    # print("Initial Condtion -> ")
+    # agent_five.print_state()
     # agent_five.simulate_step(prey, predator)
-    for i in range(1,101):
-    # while(True):
-        print("i = ",i)
-        if agent_five.position==prey.position:
-            print("Prey found main")
-            break
+    # for i in range(1,101):
+    # # while(True):
+    #     print("i = ",i)
+    #     if agent_five.position==prey.position:
+    #         print("Prey found main")
+    #         break
         
-        agent_five.simulate_step(survey_node,prey, predator)
-        agent_five.print_state()
-        m=max(agent_five.p_now)
-        survey_list=[node+1 for node in range(len(agent_five.p_now)) if agent_five.p_now[node]==m]
-        survey_node=random.choice(survey_list)
+    #     agent_five.simulate_step(survey_node,prey, predator)
+    #     agent_five.print_state()
+    #     m=max(agent_five.p_now)
+    #     survey_list=[node+1 for node in range(len(agent_five.p_now)) if agent_five.p_now[node]==m]
+    #     survey_node=random.choice(survey_list)
 
 
     # agent_five.print_state()

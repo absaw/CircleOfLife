@@ -76,27 +76,13 @@ class AgentThree:
                     p_new[node-1]=p_prey_in_current_node/p_prey_not_in_survey_node
             
             self.p_now=p_new.copy()
-    #Used- Simplified version
+
     def transition_update(self):
         # This updates the prob of all nodes, for when the prey moves in the graph
-        for update_node in range(1,self.n_nodes+1): # C
-            neighbors_of_update_node=list(self.G.neighbors(update_node))+[update_node] # [A,B,D,E]
-
-            p_update_node=0
-
-            for neighbor_of_update_node in neighbors_of_update_node:# node=A,B,D,E
-                degree_of_neighbor_of_update_node=self.G.degree(neighbor_of_update_node)
-                p_update_node+=self.p_now[neighbor_of_update_node-1]/(degree_of_neighbor_of_update_node+1)
-        
-            self.p_next[update_node-1]=p_update_node
-    
-    # Not Used--Too complex version
-    def transition_update_old_unused(self):
-        # This updates the prob of all nodes, for when the prey moves in the graph
         for survey_node in range(1,self.n_nodes+1):
-            set_next_prob_list=list(self.G.neighbors(survey_node))+[survey_node] # A,B,C,Sn
+            set_next_prob_list=list(self.G.neighbors(survey_node))+[survey_node]
 
-            for node in set_next_prob_list: # node = A,B,C,S
+            for node in set_next_prob_list:
                 set_next_prob_list_neighbor=list(self.G.neighbors(node))+[node]
                 p_node_2=0
                 for node_2 in set_next_prob_list_neighbor:
@@ -152,27 +138,27 @@ if __name__=="__main__":
     survey_list=list(range(1,51))
     survey_list.remove(agent_three.position)
     survey_node=random.choice(survey_list)
-    # print("Initial Condtion -> ")
-    # agent_three.print_state()
+    print("Initial Condtion -> ")
+    agent_three.print_state()
     # agent_three.simulate_step(prey, predator)
-    # for i in range(1,101):
-    # # while(True):
-    #     print("i = ",i)
-    #     if agent_three.position==prey.position:
-    #         print("Prey found main")
-    #         break
+    for i in range(1,101):
+    # while(True):
+        print("i = ",i)
+        if agent_three.position==prey.position:
+            print("Prey found main")
+            break
         
-    #     agent_three.simulate_step(survey_node,prey, predator)
-    #     agent_three.print_state()
-    #     m=max(agent_three.p_now)
-    #     survey_list=[node+1 for node in range(len(agent_three.p_now)) if agent_three.p_now[node]==m]
-    #     survey_node=random.choice(survey_list)
+        agent_three.simulate_step(survey_node,prey, predator)
+        agent_three.print_state()
+        m=max(agent_three.p_now)
+        survey_list=[node+1 for node in range(len(agent_three.p_now)) if agent_three.p_now[node]==m]
+        survey_node=random.choice(survey_list)
 
 
     # agent_three.print_state()
-    for i in range(0,10):
-        agent_three.transition_update()
-        agent_three.print_state()
+    # for i in range(0,10):
+    #     agent_three.transition_update()
+    #     agent_three.print_state()
 
 
 # def transition_update(self,survey_node):

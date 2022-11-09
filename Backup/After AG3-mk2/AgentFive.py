@@ -5,7 +5,7 @@ from Predator import *
 from AgentOne import *
 import copy
 from CallableAgentOneFunction import *
-class AgentThree:
+class AgentFive:
     
     def __init__(self,n_nodes,G : nx.Graph,prey:Prey, predator:Predator):
         self.n_nodes=n_nodes
@@ -76,35 +76,25 @@ class AgentThree:
                     p_new[node-1]=p_prey_in_current_node/p_prey_not_in_survey_node
             
             self.p_now=p_new.copy()
-    #Used- Simplified version
+
     def transition_update(self):
         # This updates the prob of all nodes, for when the prey moves in the graph
-        for update_node in range(1,self.n_nodes+1): # C
-            neighbors_of_update_node=list(self.G.neighbors(update_node))+[update_node] # [A,B,D,E]
-
-            p_update_node=0
-
-            for neighbor_of_update_node in neighbors_of_update_node:# node=A,B,D,E
-                degree_of_neighbor_of_update_node=self.G.degree(neighbor_of_update_node)
-                p_update_node+=self.p_now[neighbor_of_update_node-1]/(degree_of_neighbor_of_update_node+1)
+        distance_list=[0]*50
+        for node in range(1,self.n_nodes+1):
+            distance_list[node-1]=get_bfs_path(G, node, self.position)
         
-            self.p_next[update_node-1]=p_update_node
-    
-    # Not Used--Too complex version
-    def transition_update_old_unused(self):
-        # This updates the prob of all nodes, for when the prey moves in the graph
-        for survey_node in range(1,self.n_nodes+1):
-            set_next_prob_list=list(self.G.neighbors(survey_node))+[survey_node] # A,B,C,Sn
+        for survey_node in range(1,self.n_nodes+1): # C
+            set_next_prob_list=list(self.G.neighbors(survey_node)) # [A,B,D,E]
 
-            for node in set_next_prob_list: # node = A,B,C,S
+            for node in set_next_prob_list:# node=A,B,D,E
                 set_next_prob_list_neighbor=list(self.G.neighbors(node))+[node]
                 p_node_2=0
                 for node_2 in set_next_prob_list_neighbor:
                     if self.G.degree(node_2)==3:
-                        multiplier=4
-                    else:
                         multiplier=3
-                    p_node_2+=self.p_now[node_2-1]/multiplier
+                    else:
+                        multiplier=2
+                    p_node_2+=(0.4)*(self.p_now[node_2-1]/multiplier)
                 
                 self.p_next[node-1]=p_node_2
 
@@ -140,7 +130,7 @@ class AgentThree:
         print("Sum of P_next : ",sum(self.p_next))
 
 
-#Used for testing. Not part of the main flow. AgentThree simulator will call AgentThree
+#Used for testing. Not part of the main flow. AgentFive simulator will call AgentFive
 if __name__=="__main__":
 
     n_nodes=50
@@ -148,31 +138,31 @@ if __name__=="__main__":
     prey=Prey(n_nodes,G)
     # prey.position=6
     predator=Predator(n_nodes, G)
-    agent_three=AgentThree(n_nodes, G, prey, predator)
+    agent_five=AgentFive(n_nodes, G, prey, predator)
     survey_list=list(range(1,51))
-    survey_list.remove(agent_three.position)
+    survey_list.remove(agent_five.position)
     survey_node=random.choice(survey_list)
-    # print("Initial Condtion -> ")
-    # agent_three.print_state()
-    # agent_three.simulate_step(prey, predator)
-    # for i in range(1,101):
-    # # while(True):
-    #     print("i = ",i)
-    #     if agent_three.position==prey.position:
-    #         print("Prey found main")
-    #         break
+    print("Initial Condtion -> ")
+    agent_five.print_state()
+    # agent_five.simulate_step(prey, predator)
+    for i in range(1,101):
+    # while(True):
+        print("i = ",i)
+        if agent_five.position==prey.position:
+            print("Prey found main")
+            break
         
-    #     agent_three.simulate_step(survey_node,prey, predator)
-    #     agent_three.print_state()
-    #     m=max(agent_three.p_now)
-    #     survey_list=[node+1 for node in range(len(agent_three.p_now)) if agent_three.p_now[node]==m]
-    #     survey_node=random.choice(survey_list)
+        agent_five.simulate_step(survey_node,prey, predator)
+        agent_five.print_state()
+        m=max(agent_five.p_now)
+        survey_list=[node+1 for node in range(len(agent_five.p_now)) if agent_five.p_now[node]==m]
+        survey_node=random.choice(survey_list)
 
 
-    # agent_three.print_state()
-    for i in range(0,10):
-        agent_three.transition_update()
-        agent_three.print_state()
+    # agent_five.print_state()
+    # for i in range(0,10):
+    #     agent_five.transition_update()
+    #     agent_five.print_state()
 
 
 # def transition_update(self,survey_node):
