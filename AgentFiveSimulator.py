@@ -4,12 +4,12 @@ from Graph import *
 from BFS import *
 from Prey import *
 from Predator import *
-from AgentThree import *
+from AgentFive import *
 
 def simulate_agent_five():
     
-    n_sim=30      # No. of simulations
-    n_trials=100    # No. of Trials. Each trial has a random new graph. Final Metrics of one simulation will be calculated from these 100 trials
+    n_sim=1      # No. of simulations
+    n_trials=1    # No. of Trials. Each trial has a random new graph. Final Metrics of one simulation will be calculated from these 100 trials
                     # We then average out the metrics, from the 30 simulations we have, to eventually get the final results.
     
     n_nodes=50
@@ -34,12 +34,15 @@ def simulate_agent_five():
             #spawn prey, predator and agent at random locations
             prey=Prey(n_nodes,G)
             predator=Predator(n_nodes, G)
-            agent_five=AgentThree(n_nodes, G, prey, predator)
+            agent_five=AgentFive(n_nodes, G, prey, predator)
             
             steps=0
-            survey_list=list(range(1,51))
-            survey_list.remove(agent_five.position)
-            survey_node=random.choice(survey_list)
+            # survey_list=list(range(1,51))
+            # survey_list.remove(agent_five.position)
+            # survey_node=random.choice(survey_list)
+
+            #We know the predator's position initially so we start by surveying that node
+            survey_node=predator.position
             # The three players move in rounds, starting with the Agent, followed by the Prey, and then the Predator.
             while(steps<=max_steps):
                 steps+=1
@@ -60,8 +63,8 @@ def simulate_agent_five():
                     n_hang+=1
                     break
                
-                #========= Agent Three Simulation  ========
-                agent_five.simulate_step(survey_node,prey, predator)
+                #========= Agent Five Simulation  ========
+                agent_five.simulate_step(survey_node,prey,predator)
                 # Now we have our agent's next position
                 # ========= Terminal Condition Check  ========
                 if agent_five.position==predator.position:
@@ -77,7 +80,7 @@ def simulate_agent_five():
                 # ======== Prey Simulation   =========
                 prey.simulate_step()
                 
-                #agent_five.print_sum()
+                # agent_five.print_sum()
 
                 #========= Terminal Condition Check  ========
                 if agent_five.position==prey.position:
@@ -85,13 +88,14 @@ def simulate_agent_five():
                     n_steps+=steps
                     break
                 
-                #agent_five.print_sum()
                 
                 # ======== Predator Simulation   =========
-                predator.simulate_step(agent_five.position)
+                predator.simulate_step_distracted(agent_five.position)
                 # New Info : Predator has moved. So update apply transition probability update to each node in graph
                 agent_five.transition_update()
                 agent_five.p_now=agent_five.p_next.copy()
+                # agent_five.print_sum()
+
                 # ========= Terminal Condition Check  ========
                 if agent_five.position==predator.position:
                     n_lose+=1
@@ -102,14 +106,28 @@ def simulate_agent_five():
                     break
 
                 m=max(agent_five.p_now) #finding value with highest prob
-                survey_list=[node+1 for node in range(len(agent_five.p_now)) if agent_five.p_now[node]==m] # List of nodes with highest prob value
-                survey_node=random.choice(survey_list) #Selecting a random element from highest prob value list
-
+                max_prob_list=[node+1 for node in range(len(agent_five.p_now)) if agent_five.p_now[node]==m] # List of nodes with highest prob value
+                
+                #Choosing node with max prob and min distance from agent's position
+                distance_from_agent_list=[]
+                for max_prob_node in max_prob_list:
+                    distance_from_agent_list.append(len(get_bfs_path(G, max_prob_node, agent_five.position)[1]))
+                min_distance=min(distance_from_agent_list)
+                min_distance_list=[]
+                for max_prob_node_index in range(len(max_prob_list)):
+                    if min_distance==distance_from_agent_list[max_prob_node_index]:
+                        min_distance_list.append(max_prob_list[max_prob_node_index])
+                
+                survey_node=random.choice(min_distance_list)
+                # survey_node=random.choice(survey_list) #Selecting a random element from highest prob value list
 
         win_list.append(n_win)
         lose_list.append(n_lose)
         hang_list.append(n_hang)
         step_list.append(n_steps/n_win)
+        print("Trial - ",trial)
+        print("Wins = ",n_win)
+
     print("Win List : ",*win_list)
     print("Lose List : ",*lose_list)
     print("Hang List : ",*hang_list)

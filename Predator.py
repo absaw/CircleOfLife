@@ -33,7 +33,7 @@ class Predator:
     def simulate_step_distracted(self,agent_pos):
 
         prob=random.random()
-        if prob>=0.6:
+        if prob<=0.6:
             neighbor_list=list(self.G.neighbors(self.position))
             shortest_path_list=[]
             shortest_path_len_list=[]

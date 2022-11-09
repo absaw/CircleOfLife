@@ -3,7 +3,6 @@ from BFS import *
 from Prey import *
 from Predator import *
 from AgentOne import *
-import copy
 from CallableAgentOneFunction import *
 class AgentFive:
     
@@ -33,16 +32,30 @@ class AgentFive:
        
         # 1. Belief update based on surveyed node
         self.update_belief(survey_node, predator.position)
-        G_copy=copy.deepcopy(self.G)
         
+        # Selecting node with max probability of finding predator as virtual predator
         m=max(self.p_now)
         max_prob_list=[node+1 for node in range(len(self.p_now)) if self.p_now[node]==m]
-        predator_virtual_location=random.choice(max_prob_list)
+        distance_from_agent_list=[]
+
+        for max_prob_node in max_prob_list:
+            distance_from_agent_list.append(len(get_bfs_path(self.G, max_prob_node, self.position)[1]))
+        
+        min_distance=min(distance_from_agent_list)
+        min_distance_list=[]
+        for max_prob_node_index in range(len(max_prob_list)):
+            if min_distance==distance_from_agent_list[max_prob_node_index]:
+                min_distance_list.append(max_prob_list[max_prob_node_index])
+        
+        # Breaking ties from max_prob_list- First choose node closest to agent. Then at random
+        virtual_predator_location=random.choice(min_distance_list)
+
+        # virtual_predator_location=random.choice(max_prob_list)
         
         virtual_predator=Predator(self.n_nodes,self.G)
-        virtual_predator.position=predator_virtual_location
+        virtual_predator.position=virtual_predator_location
         
-        #2. Agent moves towards the highest prob_now node of predator with rules of agent One
+        #2. Agent moves with the highest prob_now node of predator with rules of agent One
         ag_one=AgentOne(self.n_nodes, self.G, self.prey, virtual_predator)
         ag_one.position=self.position
         ag_one.simulate_step(self.prey, virtual_predator)
@@ -107,7 +120,7 @@ class AgentFive:
                 neighbors_of_n1=list(self.G.neighbors(neighbor_of_update_node))
                 distance_to_agent_list=[]
                 for neighbor_of_n1 in neighbors_of_n1:
-                    distance_to_agent=len(get_bfs_path(G, neighbor_of_n1, self.position)[1])
+                    distance_to_agent=len(get_bfs_path(self.G, neighbor_of_n1, self.position)[1])
                     distance_to_agent_list.append(distance_to_agent)
                 min_distance_to_agent=min(distance_to_agent_list)
                 
@@ -142,12 +155,12 @@ class AgentFive:
 
             #1st component done
 
-    #Unused transition update--to complex
+    #Unused transition update--too complex
     def transition_update_old_unused(self):
         # This updates the prob of all nodes, for when the predator moves in the graph
         # distance_list=[0]*50
         # for node in range(1,self.n_nodes+1):
-        #     distance_list[node-1]=get_bfs_path(G, node, self.position)
+        #     distance_list[node-1]=get_bfs_path(self.G, node, self.position)
         
         for survey_node in range(1,self.n_nodes+1): # C
             set_next_prob_list=list(self.G.neighbors(survey_node)) # [A,B,D,E]
@@ -166,7 +179,7 @@ class AgentFive:
                         multiplier=2
                     p_node+=(0.4)*(self.p_now[node_2-1]/multiplier)
 
-                    node_2_neighbor_dist_to_agent.append(len(get_bfs_path(G,node_2, self.position)[1]))# Distances of B and C from Agent #Appending (node,distance to agent) tuple to list
+                    node_2_neighbor_dist_to_agent.append(len(get_bfs_path(self.G,node_2, self.position)[1]))# Distances of B and C from Agent #Appending (node,distance to agent) tuple to list
 
                 min_dist_to_agent=min(node_2_neighbor_dist_to_agent)
 
