@@ -8,8 +8,8 @@ from AgentFive import *
 
 def simulate_agent_five():
     
-    n_sim=30      # No. of simulations
-    n_trials=100    # No. of Trials. Each trial has a random new graph. Final Metrics of one simulation will be calculated from these 100 trials
+    n_sim=1      # No. of simulations
+    n_trials=1    # No. of Trials. Each trial has a random new graph. Final Metrics of one simulation will be calculated from these 100 trials
                     # We then average out the metrics, from the 30 simulations we have, to eventually get the final results.
     
     n_nodes=50
@@ -75,7 +75,7 @@ def simulate_agent_five():
                     n_steps+=steps
                     break
                 # New Info : Predator is not in current agent's position. So update belief system
-                # agent_five.update_belief(agent_five.position, prey.position)
+                agent_five.update_belief(agent_five.position, prey.position)
 
                 # ======== Prey Simulation   =========
                 prey.simulate_step()
@@ -125,7 +125,7 @@ def simulate_agent_five():
         lose_list.append(n_lose)
         hang_list.append(n_hang)
         step_list.append(n_steps/n_win)
-        print("Simulation - ",sim)
+        print("Trial - ",trial)
         print("Wins = ",n_win)
 
     print("Win List : ",*win_list)
