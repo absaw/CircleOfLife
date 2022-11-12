@@ -156,7 +156,7 @@ def simulate_agent_eight():
     print("Average steps : ",(sum(step_list)/len(step_list)))
     print("Hang Threshold : ",hang_threshold)
 
-simulate_agent_eight()
+# simulate_agent_eight()
 
 
                             

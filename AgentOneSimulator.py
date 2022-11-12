@@ -96,7 +96,7 @@ def simulate_agent_one():
     print("Average hangs : ",(sum(hang_list)/len(hang_list)))
     print("Hang Threshold : ",hang_threshold)
 
-simulate_agent_one()
+# simulate_agent_one()
 
 
                             

@@ -109,7 +109,7 @@ def simulate_agent_two():
     print("Average steps : ",(sum(step_list)/len(step_list)))
     print("Hang Threshold : ",hang_threshold)
 
-simulate_agent_two()
+# simulate_agent_two()
 
 
                             
