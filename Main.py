@@ -1,3 +1,8 @@
+######################################################
+#       Main file of Project  -  Used to call all agents
+######################################################
+
+
 from AgentOneSimulator import *
 from AgentTwoSimulator import *
 from AgentThreeSimulator import *
@@ -9,23 +14,8 @@ from AgentEightSimulator import *
 
 if __name__=="__main__":
 
-    # print("Press choice number for agent. 0 to exit")
-    # print(" 1 = Agent One")
-    # print(" 2 = Agent Two")
-    # print(" 3 = Agent Three")
-    # print(" 4 = Agent Four")
-    # print(" 5 = Agent Five")
-    # print(" 6 = Agent Six")
-    # print(" 7 = Agent Seven")
-    # print(" 8 = Agent Eight")
     ch=-1
     while ch!=0:
-    # match "h":
-    #     case '1':
-    #         print("Started Agent One Simulator->\n")
-    #         simulate_agent_one()
-    #     case other:
-    #         print("Invalid input")
 
         print("\n\nPress choice number for agent. 0 to exit")
         print(" 1 = Agent One")
