@@ -27,67 +27,231 @@ class AgentTwo:
         # print("Distance from Pred =",d_predator)
         # print("Current Position = ",self.position)
         # print("Neighbor List = ",neighbor_list)
-
+        len_list=[]
         cost_matrix={}
         for neighbor in neighbor_list:
             c_prey=len(get_bfs_path(self.G, neighbor, prey.position)[1])
             c_predator=len(get_bfs_path(self.G, neighbor, predator.position)[1])
             cost_matrix[neighbor]=[c_prey,c_predator]
-        l1=[]
-        for neighbor in neighbor_list:
-            if cost_matrix[neighbor][0]<d_prey and cost_matrix[neighbor][1]>d_predator:
-                l1.append(neighbor)
         
-        if not l1:
-            
-            l2=[]
-            for neighbor in neighbor_list:
-                if cost_matrix[neighbor][0]<d_prey and cost_matrix[neighbor][1]==d_predator:
-                    l2.append(neighbor)
+        run_from_pred_threshold=3
 
-            if not l2:
+
+        if d_predator<run_from_pred_threshold:
+
+            #default behaviour
+            l1=[]
+            for neighbor in neighbor_list:
+                if cost_matrix[neighbor][0]<d_prey and cost_matrix[neighbor][1]>d_predator:
+                    l1.append(neighbor)
+            
+            if not l1:
+                
+                l2=[]
+                for neighbor in neighbor_list:
+                    if cost_matrix[neighbor][0]<d_prey and cost_matrix[neighbor][1]==d_predator:
+                        l2.append(neighbor)
+
+                if not l2:
+                    l3=[]
+                    for neighbor in neighbor_list:
+                        if cost_matrix[neighbor][0]==d_prey and cost_matrix[neighbor][1]>d_predator:
+                            l3.append(neighbor)
+                    
+                    if not l3:
+                        l4=[]
+                        for neighbor in neighbor_list:
+                            if cost_matrix[neighbor][0]==d_prey and cost_matrix[neighbor][1]==d_predator:
+                                l4.append(neighbor)
+                        
+                        if not l4:
+                            l5=[]
+                            for neighbor in neighbor_list:
+                                if cost_matrix[neighbor][1]>d_predator:
+                                    l5.append(neighbor)
+                            
+                            if not l5:
+                                l6=[]
+                                for neighbor in neighbor_list:
+                                    if cost_matrix[neighbor][1]==d_predator:
+                                        l6.append(neighbor)
+
+                                if not l6:
+                                    #select randomly from all neighbors or current position
+                                    next_position=random.choice([self.position]+neighbor_list)
+
+                                else:
+                                    len_list.append(len(l6))
+                                    # next_position=random.choice(l6)
+                                    if len(l6)>1:
+                                        if self.G.degree(l6[0])>self.G.degree(l6[1]):
+                                            next_position=l6[0]
+                                        else:
+                                            next_position=l6[1]
+                                    else:
+                                        next_position=l6[0]
+
+                            else:
+                                len_list.append(len(l5))
+                                # next_position=random.choice(l5)
+                                if len(l5)>1:
+                                    if self.G.degree(l5[0])>self.G.degree(l5[1]):
+                                        next_position=l5[0]
+                                    else:
+                                        next_position=l5[1]
+                                else:
+                                    next_position=l5[0]
+
+                        else:
+                            len_list.append(len(l4))
+                            # next_position=random.choice(l4)
+                            if len(l4)>1:
+                                if self.G.degree(l4[0])>self.G.degree(l4[1]):
+                                    next_position=l4[0]
+                                else:
+                                    next_position=l4[1]
+                            else:
+                                next_position=l4[0]
+
+                    else:
+                        len_list.append(len(l3))
+                        if len(l3)>1:
+                            if self.G.degree(l3[0])>self.G.degree(l3[1]):
+                                next_position=l3[0]
+                            else:
+                                next_position=l3[1]
+                        else:
+                            next_position=l3[0]
+                        # next_position=random.choice(l3)
+
+                else:
+                    len_list.append(len(l2))
+                    if len(l2)>1:
+                        if self.G.degree(l2[0])>self.G.degree(l2[1]):
+                            next_position=l2[0]
+                        else:
+                            next_position=l2[1]
+                    else:
+                        next_position=l2[0]
+                    # next_position=random.choice(l2)
+
+
+            else:
+                len_list.append(len(l1))
+                if len(l1)>1:
+                    if self.G.degree(l1[0])>self.G.degree(l1[1]):
+                        next_position=l1[0]
+                    else:
+                        next_position=l1[1]
+                else:
+                    next_position=l1[0]
+        else:
+            #run towards prey
+            l1=[]
+            for neighbor in neighbor_list:
+                if cost_matrix[neighbor][0]<d_prey and cost_matrix[neighbor][1]>d_predator:
+                    l1.append(neighbor)
+            
+            if not l1:
+                
+                l2=[]
+                for neighbor in neighbor_list:
+                    if cost_matrix[neighbor][0]<d_prey and cost_matrix[neighbor][1]==d_predator:
+                        l2.append(neighbor)
+
+                if not l2:
                 # l3=[]
                 # for neighbor in neighbor_list:
-                #     if cost_matrix[neighbor][0]==d_prey and cost_matrix[neighbor][1]>d_predator:
+                #     if cost_matrix[neighbor][0]==d_prey and cost_matrix[neighbor][1]>=d_predator:
                 #         l3.append(neighbor)
                 
                 # if not l3:
-                #     l4=[]
-                #     for neighbor in neighbor_list:
-                #         if cost_matrix[neighbor][0]==d_prey and cost_matrix[neighbor][1]==d_predator:
-                #             l4.append(neighbor)
-                    
-                    # if not l4:
-                        l5=[]
-                        for neighbor in neighbor_list:
-                            if cost_matrix[neighbor][1]>d_predator:
-                                l5.append(neighbor)
+                        # l4=[]
+                        # for neighbor in neighbor_list:
+                        #     if cost_matrix[neighbor][0]==d_prey and cost_matrix[neighbor][1]==d_predator:
+                        #         l4.append(neighbor)
                         
-                        if not l5:
-                            l6=[]
-                            for neighbor in neighbor_list:
-                                if cost_matrix[neighbor][1]==d_predator:
-                                    l6.append(neighbor)
+                # if not l4:
+                    l5=[]
+                    for neighbor in neighbor_list:
+                        if cost_matrix[neighbor][1]>d_predator:
+                            l5.append(neighbor)
+                    
+                    if not l5:
+                        l6=[]
+                        for neighbor in neighbor_list:
+                            if cost_matrix[neighbor][1]==d_predator:
+                                l6.append(neighbor)
 
-                            if not l6:
-                                #select randomly from all neighbors or current position
-                                next_position=random.choice([self.position]+neighbor_list)
-                            else:
-                                next_position=random.choice(l6)
+                        if not l6:
+                            #select randomly from all neighbors or current position
+                            next_position=random.choice(neighbor_list)
 
                         else:
-                            next_position=random.choice(l5)
+                            len_list.append(len(l6))
+                            # next_position=random.choice(l6)
+                            if len(l6)>1:
+                                if self.G.degree(l6[0])>self.G.degree(l6[1]):
+                                    next_position=l6[0]
+                                else:
+                                    next_position=l6[1]
+                            else:
+                                next_position=l6[0]
 
-                #     else:
-                #         next_position=random.choice(l4)
+                    else:
+                        len_list.append(len(l5))
+                        # next_position=random.choice(l5)
+                        if len(l5)>1:
+                            if self.G.degree(l5[0])>self.G.degree(l5[1]):
+                                next_position=l5[0]
+                            else:
+                                next_position=l5[1]
+                        else:
+                            next_position=l5[0]
+
+                        # else:
+                        #     len_list.append(len(l4))
+                        #     # next_position=random.choice(l4)
+                        #     if len(l4)>1:
+                        #         if self.G.degree(l4[0])>self.G.degree(l4[1]):
+                        #             next_position=l4[0]
+                        #         else:
+                        #             next_position=l4[1]
+                        #     else:
+                        #         next_position=l4[0]
 
                 # else:
-                #     next_position=random.choice(l3)
+                #     len_list.append(len(l3))
+                #     if len(l3)>1:
+                #         if self.G.degree(l3[0])>self.G.degree(l3[1]):
+                #             next_position=l3[0]
+                #         else:
+                #             next_position=l3[1]
+                #     else:
+                #         next_position=l3[0]
+                        # next_position=random.choice(l3)
+
+                else:
+                    len_list.append(len(l2))
+                    if len(l2)>1:
+                        if self.G.degree(l2[0])>self.G.degree(l2[1]):
+                            next_position=l2[0]
+                        else:
+                            next_position=l2[1]
+                    else:
+                        next_position=l2[0]
+                    # next_position=random.choice(l2)
+
 
             else:
-                next_position=random.choice(l2)
-
-        else:
-            next_position=random.choice(l1)
-        
+                len_list.append(len(l1))
+                if len(l1)>1:
+                    if self.G.degree(l1[0])>self.G.degree(l1[1]):
+                        next_position=l1[0]
+                    else:
+                        next_position=l1[1]
+                else:
+                    next_position=l1[0]
+        # if len_list:
+            # print(max(len_list))
         self.position=next_position

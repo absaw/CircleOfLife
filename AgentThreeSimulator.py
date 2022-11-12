@@ -113,7 +113,7 @@ def simulate_agent_three():
     print("Win List : ",*win_list)
     print("Lose List : ",*lose_list)
     print("Hang List : ",*hang_list)
-    print("Step List : ",*step_list)
+    # print("Step List : ",*step_list)
     print("Average wins : ",(sum(win_list)/len(win_list)))
     print("Average losses : ",(sum(lose_list)/len(lose_list)))
     print("Average hangs : ",(sum(hang_list)/len(hang_list)))

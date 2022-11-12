@@ -16,12 +16,16 @@ def simulate_agent_two():
     win_list=[]
     lose_list=[]
     hang_list=[]
+    step_list=[]
+
     for sim in range(1,n_sim+1):
         n_win=0     # When agent and prey are in same position, provided pred is not in that position
         n_lose=0    # When agent and predator are in same position
         n_hang=0    # When agent can't catch prey, even after walking a certain threshold distance
         hang_threshold=100
         max_steps=300
+        n_steps=0
+
         for trial in range(1,n_trials+1):
 
             #generate graph
@@ -52,6 +56,7 @@ def simulate_agent_two():
                     break
                 if agent_two.position==prey.position:
                     n_win+=1
+                    n_steps+=steps
                     break
                 # Threshold condition
                 if steps>=hang_threshold:
@@ -68,6 +73,7 @@ def simulate_agent_two():
                     break
                 if agent_two.position==prey.position:
                     n_win+=1
+                    n_steps+=steps
                     # print("Goal Reached")
                     break
                 # ======== Predator Simulation   =========
@@ -79,6 +85,7 @@ def simulate_agent_two():
                     break
                 if agent_two.position==prey.position:
                     n_win+=1
+                    n_steps+=steps
                     break
 
                 # path.append(next_position)
@@ -91,12 +98,15 @@ def simulate_agent_two():
         win_list.append(n_win)
         lose_list.append(n_lose)
         hang_list.append(n_hang)
+        step_list.append(n_steps/n_win)
     print("Win List : ",*win_list)
     print("Lose List : ",*lose_list)
     print("Hang List : ",*hang_list)
+    # print("Step List : ",*step_list)
     print("Average wins : ",(sum(win_list)/len(win_list)))
     print("Average losses : ",(sum(lose_list)/len(lose_list)))
     print("Average hangs : ",(sum(hang_list)/len(hang_list)))
+    print("Average steps : ",(sum(step_list)/len(step_list)))
     print("Hang Threshold : ",hang_threshold)
 
 simulate_agent_two()

@@ -143,8 +143,8 @@ def simulate_agent_seven():
         lose_list.append(n_lose)
         hang_list.append(n_hang)
         step_list.append(n_steps/n_win)
-        print("Sim - ",sim)
-        print("Wins = ",n_win)
+        # print("Sim - ",sim)
+        # print("Wins = ",n_win)
 
     print("Win List : ",*win_list)
     print("Lose List : ",*lose_list)

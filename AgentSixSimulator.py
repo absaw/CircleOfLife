@@ -4,9 +4,9 @@ from Graph import *
 from BFS import *
 from Prey import *
 from Predator import *
-from AgentFive import *
+from AgentSix import *
 
-def simulate_agent_five():
+def simulate_agent_six():
     
     n_sim=30      # No. of simulations
     n_trials=100    # No. of Trials. Each trial has a random new graph. Final Metrics of one simulation will be calculated from these 100 trials
@@ -34,11 +34,11 @@ def simulate_agent_five():
             #spawn prey, predator and agent at random locations
             prey=Prey(n_nodes,G)
             predator=Predator(n_nodes, G)
-            agent_five=AgentFive(n_nodes, G, prey, predator)
+            agent_six=AgentSix(n_nodes, G, prey, predator)
             
             steps=0
             # survey_list=list(range(1,51))
-            # survey_list.remove(agent_five.position)
+            # survey_list.remove(agent_six.position)
             # survey_node=random.choice(survey_list)
 
             #We know the predator's position initially so we start by surveying that node
@@ -47,12 +47,12 @@ def simulate_agent_five():
             while(steps<=max_steps):
                 steps+=1
                 # print("\n\nStep ->>>>> ",steps)
-                # agent_five.print_state()
+                # agent_six.print_state()
                 # ========= Terminal Condition Check  ========
-                if agent_five.position==predator.position:
+                if agent_six.position==predator.position:
                     n_lose+=1
                     break
-                if agent_five.position==prey.position:
+                if agent_six.position==prey.position:
                     # print("Prey found")
                     n_win+=1
                     n_steps+=steps
@@ -63,55 +63,55 @@ def simulate_agent_five():
                     n_hang+=1
                     break
                
-                #========= Agent Five Simulation  ========
-                agent_five.simulate_step(survey_node,prey,predator)
+                #========= Agent Six Simulation  ========
+                agent_six.simulate_step(survey_node,prey,predator)
                 # Now we have our agent's next position
                 # ========= Terminal Condition Check  ========
-                if agent_five.position==predator.position:
+                if agent_six.position==predator.position:
                     n_lose+=1
                     break
-                if agent_five.position==prey.position:
+                if agent_six.position==prey.position:
                     n_win+=1
                     n_steps+=steps
                     break
                 # New Info : Predator is not in current agent's position. So update belief system
-                # agent_five.update_belief(agent_five.position, prey.position)
+                # agent_six.update_belief(agent_six.position, prey.position)
 
                 # ======== Prey Simulation   =========
                 prey.simulate_step()
                 
-                # agent_five.print_sum()
+                # agent_six.print_sum()
 
                 #========= Terminal Condition Check  ========
-                if agent_five.position==prey.position:
+                if agent_six.position==prey.position:
                     n_win+=1
                     n_steps+=steps
                     break
                 
                 
                 # ======== Predator Simulation   =========
-                predator.simulate_step_distracted(agent_five.position)
+                predator.simulate_step_distracted(agent_six.position)
                 # New Info : Predator has moved. So update apply transition probability update to each node in graph
-                agent_five.transition_update()
-                agent_five.p_now=agent_five.p_next.copy()
-                # agent_five.print_sum()
+                agent_six.transition_update()
+                agent_six.p_now=agent_six.p_next.copy()
+                # agent_six.print_sum()
 
                 # ========= Terminal Condition Check  ========
-                if agent_five.position==predator.position:
+                if agent_six.position==predator.position:
                     n_lose+=1
                     break
-                if agent_five.position==prey.position:
+                if agent_six.position==prey.position:
                     n_win+=1
                     n_steps+=steps
                     break
 
-                m=max(agent_five.p_now) #finding value with highest prob
-                max_prob_list=[node+1 for node in range(len(agent_five.p_now)) if agent_five.p_now[node]==m] # List of nodes with highest prob value
+                m=max(agent_six.p_now) #finding value with highest prob
+                max_prob_list=[node+1 for node in range(len(agent_six.p_now)) if agent_six.p_now[node]==m] # List of nodes with highest prob value
                 
                 #Choosing node with max prob and min distance from agent's position
                 distance_from_agent_list=[]
                 for max_prob_node in max_prob_list:
-                    distance_from_agent_list.append(len(get_bfs_path(G, max_prob_node, agent_five.position)[1]))
+                    distance_from_agent_list.append(len(get_bfs_path(G, max_prob_node, agent_six.position)[1]))
                 min_distance=min(distance_from_agent_list)
                 min_distance_list=[]
                 for max_prob_node_index in range(len(max_prob_list)):
@@ -131,14 +131,14 @@ def simulate_agent_five():
     print("Win List : ",*win_list)
     print("Lose List : ",*lose_list)
     print("Hang List : ",*hang_list)
-    print("Step List : ",*step_list)
+    # print("Step List : ",*step_list)
     print("Average wins : ",(sum(win_list)/len(win_list)))
     print("Average losses : ",(sum(lose_list)/len(lose_list)))
     print("Average hangs : ",(sum(hang_list)/len(hang_list)))
     print("Average steps : ",(sum(step_list)/len(step_list)))
     print("Hang Threshold : ",hang_threshold)
 
-simulate_agent_five()
+simulate_agent_six()
 
 
                             
