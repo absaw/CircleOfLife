@@ -3,7 +3,6 @@ from BFS import *
 from Prey import *
 from Predator import *
 from AgentOne import *
-from CallableAgentOneFunction import *
 
 class AgentSeven:
     
@@ -27,7 +26,9 @@ class AgentSeven:
         self.initialize_probabilities()
         self.p_now_prey[self.position-1]=0
         self.p_now_predator[self.position-1]=0
-
+        self.sure_of_prey=0
+        self.sure_of_predator=0
+        self.survey=True
 
     # Common Functions 
 
@@ -45,7 +46,6 @@ class AgentSeven:
         virtual_prey=Prey(self.n_nodes,self.G)
         virtual_prey.position=virtual_prey_location
 
-        # self.update_belief_predator(survey_node, predator.position)
         # Selecting node with max probability of finding predator as virtual predator
         m=max(self.p_now_predator)
         max_prob_list=[node+1 for node in range(len(self.p_now_predator)) if self.p_now_predator[node]==m]
@@ -75,38 +75,7 @@ class AgentSeven:
         self.position=ag_one.position
         
         #Agent has now moved to the new position, according to agent 1's behaviour
-        # 3. Update belief system again
-        # self.update_belief_prey(survey_node, prey.position)
-        # self.update_belief_predator(self.position, predator.position)
-    
-    def simulate_step_prey(self,survey_node,prey : Prey,predator:Predator):
-        # Simulate step will perform following actions:-
-        # 1. Update belief system for finding/not finding prey at current survey node
-        # 2. Move agent to next highest prob value neighbor by rules of Agent 1
-        # 3. Update belief system for finding/not finding prey at new position
-
-        #Prey's position here is only used to check if the surveyed node is the prey's node or not
-       
-        # 1. Belief update based on surveyed node
-        self.update_belief(survey_node, prey.position)
-        G_copy=copy.deepcopy(self.G)
         
-        m=max(self.p_now_prey)
-        max_prob_list=[node+1 for node in range(len(self.p_now_prey)) if self.p_now_prey[node]==m]
-        prey_virtual_location=random.choice(max_prob_list)
-        
-        virtual_prey=Prey(self.n_nodes,self.G)
-        virtual_prey.position=prey_virtual_location
-        
-        #2. Agent moves towards the highest prob_now node of prey with rules of agent One
-        ag_one=AgentOne(self.n_nodes, self.G, virtual_prey, self.predator)
-        ag_one.position=self.position
-        ag_one.simulate_step(virtual_prey, self.predator)
-        self.position=ag_one.position
-        
-        #Agent has now moved to the new position, according to agent 1's behaviour
-        # 3. Update belief system again
-        self.update_belief_prey(self.position, prey.position)
     
 
     def update_belief_prey(self,survey_node,prey_positon):
@@ -121,6 +90,7 @@ class AgentSeven:
             for node in range(1,51):
                 if node!=survey_node:
                     self.p_now_prey[node-1]=0
+            self.sure_of_prey+=1
             
         else:
             #2. Prey not found scenario
@@ -162,6 +132,7 @@ class AgentSeven:
             for node in range(1,51):
                 if node!=survey_node:
                     self.p_now_predator[node-1]=0
+            self.sure_of_predator+=1
             
         else:
             #2. Prey not found scenario

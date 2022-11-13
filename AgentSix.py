@@ -3,7 +3,7 @@ from BFS import *
 from Prey import *
 from Predator import *
 from AgentTwo import *
-from CallableAgentOneFunction import *
+
 class AgentSix:
     
     def __init__(self,n_nodes,G : nx.Graph,prey:Prey, predator:Predator):

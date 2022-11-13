@@ -1,0 +1,79 @@
+
+
+
+======  Start Time  =========->  11/13/22 18:29:57
+No. of Simulations = 30
+No. of trials for each simulation = 100
+Report for Simulation Number 1
+Player Survivability = 69 %
+Report for Simulation Number 2
+Player Survivability = 62 %
+Report for Simulation Number 3
+Player Survivability = 62 %
+Report for Simulation Number 4
+Player Survivability = 54 %
+Report for Simulation Number 5
+Player Survivability = 55 %
+Report for Simulation Number 6
+Player Survivability = 63 %
+Report for Simulation Number 7
+Player Survivability = 58 %
+Report for Simulation Number 8
+Player Survivability = 65 %
+Report for Simulation Number 9
+Player Survivability = 61 %
+Report for Simulation Number 10
+Player Survivability = 50 %
+Report for Simulation Number 11
+Player Survivability = 64 %
+Report for Simulation Number 12
+Player Survivability = 63 %
+Report for Simulation Number 13
+Player Survivability = 64 %
+Report for Simulation Number 14
+Player Survivability = 66 %
+Report for Simulation Number 15
+Player Survivability = 61 %
+Report for Simulation Number 16
+Player Survivability = 65 %
+Report for Simulation Number 17
+Player Survivability = 58 %
+Report for Simulation Number 18
+Player Survivability = 67 %
+Report for Simulation Number 19
+Player Survivability = 59 %
+Report for Simulation Number 20
+Player Survivability = 57 %
+Report for Simulation Number 21
+Player Survivability = 55 %
+Report for Simulation Number 22
+Player Survivability = 65 %
+Report for Simulation Number 23
+Player Survivability = 63 %
+Report for Simulation Number 24
+Player Survivability = 61 %
+Report for Simulation Number 25
+Player Survivability = 65 %
+Report for Simulation Number 26
+Player Survivability = 61 %
+Report for Simulation Number 27
+Player Survivability = 52 %
+Report for Simulation Number 28
+Player Survivability = 59 %
+Report for Simulation Number 29
+Player Survivability = 62 %
+Report for Simulation Number 30
+Player Survivability = 58 %
+
+Summary : 
+Win List : [69, 62, 62, 54, 55, 63, 58, 65, 61, 50, 64, 63, 64, 66, 61, 65, 58, 67, 59, 57, 55, 65, 63, 61, 65, 61, 52, 59, 62, 58]
+Lose List : [30, 38, 36, 44, 45, 36, 40, 33, 39, 48, 35, 37, 36, 34, 39, 35, 41, 33, 41, 42, 45, 35, 37, 39, 35, 39, 47, 41, 37, 41]
+Average wins : 60.80
+Average losses : 38.60
+Average hangs : 0.60
+Average No. of times Agent was sure about Prey's Location : 0.36
+Average No. of times Agent was sure about Predator's Location : 15.633333
+Average steps : 24.94
+Hang Threshold : 100.00
+
+Execution Time = 969.3000688552856 s

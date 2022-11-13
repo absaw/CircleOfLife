@@ -16,7 +16,8 @@ def simulate_agent_five():
     file=open(filename_txt,"a")
     csvfile = open(filename_csv, "a")
     csv_writer=csv.writer(csvfile)
-    fields=['Date Time','Simulation Number','Number of Graphs','Won','Died','Hanged','No. of Steps','Comments']
+    # fields=['Date Time','Simulation Number','Number of Graphs','Won','Died','Hanged','No. of Steps','Comments']
+    fields=['Date Time','Simulation Number','Number of Graphs','Won','Died','Hanged','No. of Steps','Frequency of Knowing Exact Location','Comments']
     csv_writer.writerow(fields)
     text = "\n\n\n======  Start Time  =========->  " + \
         datetime.now().strftime("%m/%d/%y %H:%M:%S")
@@ -37,6 +38,8 @@ def simulate_agent_five():
     lose_list=[]
     hang_list=[]
     step_list=[]
+    sure_list=[]
+
     for sim in range(1,n_sim+1):
         n_win=0     # When agent and prey are in same position, provided pred is not in that position
         n_lose=0    # When agent and predator are in same position
@@ -44,6 +47,7 @@ def simulate_agent_five():
         hang_threshold=100
         max_steps=300
         n_steps=0
+        n_sure=0
 
         for trial in range(1,n_trials+1):
 
@@ -82,10 +86,31 @@ def simulate_agent_five():
                     # print("hanged")
                     n_hang+=1
                     break
+               #This agent can only survey OR move in one round. We can alternate between surveying and moving in each
+                #round, so that there is equal progress made in movement as well as update belief on an overall number of moves 
+                # This part of code will update the belief based on the survey node
+                d_predator=len(get_bfs_path(agent_five.G, agent_five.position, survey_node)[1])  #Distance from predator
+                pred_dist_threshold=3
+                if d_predator<pred_dist_threshold:
+                    agent_five.simulate_step(survey_node,prey, predator)
+                    # Now we have our agent's next position
+                    #Updating belief based on current agent position
+                    agent_five.update_belief(survey_node, prey.position)
+                else:
+                    if agent_five.survey:
+                        agent_five.update_belief(survey_node, prey.position)
+                        # print("Survey done")
+                        agent_five.survey=False
+                    
+                    else :
+                        #========= Agent Five Simulation  ========
+                        agent_five.simulate_step(survey_node,prey, predator)
+                        # Now we have our agent's next position
+                        #Updating belief based on current agent position
+                        agent_five.update_belief(survey_node, prey.position)
+                        agent_five.survey=True #So that suvery is done 
+                        # print("Survey not done")
                
-                #========= Agent Five Simulation  ========
-                agent_five.simulate_step(survey_node,prey,predator)
-                # Now we have our agent's next position
                 # ========= Terminal Condition Check  ========
                 if agent_five.position==predator.position:
                     n_lose+=1
@@ -140,11 +165,14 @@ def simulate_agent_five():
                 
                 survey_node=random.choice(min_distance_list)
                 # survey_node=random.choice(survey_list) #Selecting a random element from highest prob value list
+            n_sure+=agent_five.sure_of_predator
 
         win_list.append(n_win)
         lose_list.append(n_lose)
         hang_list.append(n_hang)
         step_list.append(n_steps/n_win)
+        sure_list.append(n_sure/n_trials)
+
         # print("Simulation - ",sim)
         # print("Wins = ",n_win)
 
@@ -152,7 +180,10 @@ def simulate_agent_five():
         time_now=datetime.now().strftime("%m/%d/%y %H:%M:%S")
         file.write("\nReport for Simulation Number %d" % sim)
         file.write("\nPlayer Survivability = %d" % n_win+" %")
-        csv_writer.writerow([time_now,sim,100,str(n_win),str(n_lose),str(n_hang),str(n_steps/n_win)])
+        # csv_writer.writerow([time_now,sim,100,str(n_win),str(n_lose),str(n_hang),str(n_steps/n_win)])
+        csv_writer.writerow([time_now,sim,100,str(n_win),str(n_lose),str(n_hang),str(n_steps/n_win),str(n_sure/n_trials)])
+
+
         #Log File
 
     print("Win List : ",*win_list)
@@ -163,6 +194,7 @@ def simulate_agent_five():
     print("Average losses : ",(sum(lose_list)/len(lose_list)))
     print("Average hangs : ",(sum(hang_list)/len(hang_list)))
     print("Average steps : ",(sum(step_list)/len(step_list)))
+    print("Average No. of times Agent was sure about Predator's Location : ",(sum(sure_list)/len(sure_list)))
     print("Hang Threshold : ",hang_threshold)
 
     # Log file Start
@@ -173,6 +205,7 @@ def simulate_agent_five():
     file.write("\nAverage losses : %.2f" % (sum(lose_list)/len(lose_list)))
     file.write("\nAverage hangs : %.2f" % (sum(hang_list)/len(hang_list)))
     file.write("\nAverage steps : %.2f" % (sum(step_list)/len(step_list)))
+    file.write("\nAverage No. of times Agent was sure about Predator's Location : %2f" % (sum(sure_list)/len(sure_list)))
     file.write("\nHang Threshold : %.2f" % hang_threshold)
     end=time()
     file.write("\n\nExecution Time = "+str(end-start)+" s")

@@ -4,7 +4,7 @@ from Prey import *
 from Predator import *
 from AgentTwo import *
 import copy
-from CallableAgentOneFunction import *
+
 class AgentFour:
     
     def __init__(self,n_nodes,G : nx.Graph,prey:Prey, predator:Predator):

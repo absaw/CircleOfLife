@@ -4,7 +4,6 @@ from Prey import *
 from Predator import *
 from AgentTwo import *
 import copy
-from CallableAgentOneFunction import *
 class AgentFour:
     
     def __init__(self,n_nodes,G : nx.Graph,prey:Prey, predator:Predator):
@@ -22,6 +21,8 @@ class AgentFour:
         # Initialize the probablities of all the nodes in the graph
         self.initialize_probabilities()
         self.p_now[self.position-1]=0
+        self.sure_of_prey=0
+        self.survey=True
 
     def simulate_step(self,survey_node,prey : Prey,predator:Predator):
         # Simulate step will perform following actions:-
@@ -30,10 +31,6 @@ class AgentFour:
         # 3. Update belief system for finding/not finding prey at new position
 
         #Prey's position here is only used to check if the surveyed node is the prey's node or not
-       
-        # 1. Belief update based on surveyed node
-        # self.update_belief(survey_node, prey.position)
-        G_copy=copy.deepcopy(self.G)
         
         m=max(self.p_now)
         max_prob_list=[node+1 for node in range(len(self.p_now)) if self.p_now[node]==m]
@@ -49,8 +46,6 @@ class AgentFour:
         self.position=ag_two.position
         
         #Agent has now moved to the new position, according to agent 1's behaviour
-        # 3. Update belief system again
-        # self.update_belief(self.position, prey.position)
     
 
     def update_belief(self,survey_node,prey_positon):
@@ -65,6 +60,7 @@ class AgentFour:
             for node in range(1,51):
                 if node!=survey_node:
                     self.p_now[node-1]=0
+            self.sure_of_prey+=1
             
         else:
             #2. Prey not found scenario
@@ -90,24 +86,6 @@ class AgentFour:
         
             self.p_next[update_node-1]=p_update_node
     
-    # Not Used--Too complex version
-    def transition_update_old_unused(self):
-        # This updates the prob of all nodes, for when the prey moves in the graph
-        for survey_node in range(1,self.n_nodes+1):
-            set_next_prob_list=list(self.G.neighbors(survey_node))+[survey_node] # A,B,C,Sn
-
-            for node in set_next_prob_list: # node = A,B,C,S
-                set_next_prob_list_neighbor=list(self.G.neighbors(node))+[node]
-                p_node_2=0
-                for node_2 in set_next_prob_list_neighbor:
-                    if self.G.degree(node_2)==3:
-                        multiplier=4
-                    else:
-                        multiplier=3
-                    p_node_2+=self.p_now[node_2-1]/multiplier
-                
-                self.p_next[node-1]=p_node_2
-
     def initialize_probabilities(self):
         #Initialize all prob to 1/49
         for node in range(self.n_nodes):

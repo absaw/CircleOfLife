@@ -3,7 +3,6 @@ from BFS import *
 from Prey import *
 from Predator import *
 from AgentOne import *
-from CallableAgentOneFunction import *
 class AgentFive:
     
     def __init__(self,n_nodes,G : nx.Graph,prey:Prey, predator:Predator):
@@ -21,6 +20,9 @@ class AgentFive:
         # Initialize the probablities of all the nodes in the graph
         self.initialize_probabilities()
         self.p_now[self.position-1]=0
+        self.sure_of_predator=0
+        self.survey=True
+
 
     def simulate_step(self,survey_node,prey : Prey,predator:Predator):
         # Simulate step will perform following actions:-
@@ -29,9 +31,6 @@ class AgentFive:
         # 3. Update belief system for finding/not finding predator at new position
 
         #Prey's position here is only used to check if the surveyed node is the predator's node or not
-       
-        # 1. Belief update based on surveyed node
-        self.update_belief(survey_node, predator.position)
         
         # Selecting node with max probability of finding predator as virtual predator
         m=max(self.p_now)
@@ -62,8 +61,6 @@ class AgentFive:
         self.position=ag_one.position
         
         #Agent has now moved to the new position, according to agent 1's behaviour
-        # 3. Update belief system again
-        self.update_belief(self.position, predator.position)
     
 
     def update_belief(self,survey_node,predator_position):
@@ -78,6 +75,7 @@ class AgentFive:
             for node in range(1,51):
                 if node!=survey_node:
                     self.p_now[node-1]=0
+            self.sure_of_predator+=1
             
         else:
             #2. Prey not found scenario

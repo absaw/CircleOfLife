@@ -102,7 +102,6 @@ def simulate_agent_three():
                         agent_three.survey=True #So that suvery is done 
                         # print("Survey not done")
 
-
                 # ========= Terminal Condition Check  ========
                 if agent_three.position==predator.position:
                     n_lose+=1

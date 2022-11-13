@@ -1,0 +1,83 @@
+
+
+
+======  Start Time  =========->  11/13/22 18:09:49
+No. of Simulations = 30
+No. of trials for each simulation = 100
+
+
+======  Start Time  =========->  11/13/22 18:10:08
+No. of Simulations = 30
+No. of trials for each simulation = 100
+Report for Simulation Number 1
+Player Survivability = 72 %
+Report for Simulation Number 2
+Player Survivability = 77 %
+Report for Simulation Number 3
+Player Survivability = 69 %
+Report for Simulation Number 4
+Player Survivability = 70 %
+Report for Simulation Number 5
+Player Survivability = 69 %
+Report for Simulation Number 6
+Player Survivability = 80 %
+Report for Simulation Number 7
+Player Survivability = 71 %
+Report for Simulation Number 8
+Player Survivability = 77 %
+Report for Simulation Number 9
+Player Survivability = 74 %
+Report for Simulation Number 10
+Player Survivability = 61 %
+Report for Simulation Number 11
+Player Survivability = 70 %
+Report for Simulation Number 12
+Player Survivability = 70 %
+Report for Simulation Number 13
+Player Survivability = 79 %
+Report for Simulation Number 14
+Player Survivability = 72 %
+Report for Simulation Number 15
+Player Survivability = 70 %
+Report for Simulation Number 16
+Player Survivability = 74 %
+Report for Simulation Number 17
+Player Survivability = 77 %
+Report for Simulation Number 18
+Player Survivability = 69 %
+Report for Simulation Number 19
+Player Survivability = 77 %
+Report for Simulation Number 20
+Player Survivability = 72 %
+Report for Simulation Number 21
+Player Survivability = 64 %
+Report for Simulation Number 22
+Player Survivability = 73 %
+Report for Simulation Number 23
+Player Survivability = 69 %
+Report for Simulation Number 24
+Player Survivability = 72 %
+Report for Simulation Number 25
+Player Survivability = 73 %
+Report for Simulation Number 26
+Player Survivability = 74 %
+Report for Simulation Number 27
+Player Survivability = 70 %
+Report for Simulation Number 28
+Player Survivability = 73 %
+Report for Simulation Number 29
+Player Survivability = 76 %
+Report for Simulation Number 30
+Player Survivability = 74 %
+
+Summary : 
+Win List : [72, 77, 69, 70, 69, 80, 71, 77, 74, 61, 70, 70, 79, 72, 70, 74, 77, 69, 77, 72, 64, 73, 69, 72, 73, 74, 70, 73, 76, 74]
+Lose List : [28, 23, 30, 30, 31, 20, 28, 23, 26, 39, 30, 30, 21, 27, 29, 26, 23, 30, 23, 27, 36, 27, 30, 28, 27, 26, 30, 27, 24, 26]
+Average wins : 72.27
+Average losses : 27.50
+Average hangs : 0.23
+Average steps : 21.77
+Average No. of times Agent was sure about Prey's Location : 1.291667
+Hang Threshold : 100.00
+
+Execution Time = 26.740335941314697 s
