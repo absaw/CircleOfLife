@@ -2,10 +2,9 @@ from Graph import *
 from BFS import *
 from Prey import *
 from Predator import *
-from AgentOne import *
-from CallableAgentOneFunction import *
+from AgentTwo import *
 
-class AgentSeven:
+class AgentNine:
     
     def __init__(self,n_nodes,G : nx.Graph,prey:Prey, predator:Predator):
         self.n_nodes=n_nodes
@@ -27,9 +26,18 @@ class AgentSeven:
         self.initialize_probabilities()
         self.p_now_prey[self.position-1]=0
         self.p_now_predator[self.position-1]=0
+        self.recheck_survey_node=False
+        self.n_rechecks=0
 
 
     # Common Functions 
+    def initialize_probabilities(self):
+            #Initialize all prob to 1/49
+        for node in range(self.n_nodes):
+            self.p_now_prey[node]=1/49
+
+        for node in range(self.n_nodes):
+            self.p_now_predator[node]=1/49
 
     def simulate_step(self,survey_node,prey:Prey,predator:Predator):
         # Simulate step will perform following actions:-
@@ -68,64 +76,67 @@ class AgentSeven:
         virtual_predator=Predator(self.n_nodes,self.G)
         virtual_predator.position=virtual_predator_location
         
-        #2. Agent moves with the highest prob_now node of predator with rules of agent One
-        ag_one=AgentOne(self.n_nodes, self.G, virtual_prey, virtual_predator)
-        ag_one.position=self.position
-        ag_one.simulate_step(virtual_prey, virtual_predator)
-        self.position=ag_one.position
+        #2. Agent moves with the highest prob_now node of predator with rules of agent Two
+        ag_two=AgentTwo(self.n_nodes, self.G, virtual_prey, virtual_predator)
+        ag_two.position=self.position
+        ag_two.simulate_step(virtual_prey, virtual_predator)
+        self.position=ag_two.position
         
         #Agent has now moved to the new position, according to agent 1's behaviour
         # 3. Update belief system again
         # self.update_belief_prey(survey_node, prey.position)
         # self.update_belief_predator(self.position, predator.position)
     
-    def simulate_step_prey(self,survey_node,prey : Prey,predator:Predator):
-        # Simulate step will perform following actions:-
-        # 1. Update belief system for finding/not finding prey at current survey node
-        # 2. Move agent to next highest prob value neighbor by rules of Agent 1
-        # 3. Update belief system for finding/not finding prey at new position
-
-        #Prey's position here is only used to check if the surveyed node is the prey's node or not
-       
-        # 1. Belief update based on surveyed node
-        self.update_belief(survey_node, prey.position)
-        G_copy=copy.deepcopy(self.G)
-        
-        m=max(self.p_now_prey)
-        max_prob_list=[node+1 for node in range(len(self.p_now_prey)) if self.p_now_prey[node]==m]
-        prey_virtual_location=random.choice(max_prob_list)
-        
-        virtual_prey=Prey(self.n_nodes,self.G)
-        virtual_prey.position=prey_virtual_location
-        
-        #2. Agent moves towards the highest prob_now node of prey with rules of agent One
-        ag_one=AgentOne(self.n_nodes, self.G, virtual_prey, self.predator)
-        ag_one.position=self.position
-        ag_one.simulate_step(virtual_prey, self.predator)
-        self.position=ag_one.position
-        
-        #Agent has now moved to the new position, according to agent 1's behaviour
-        # 3. Update belief system again
-        self.update_belief_prey(self.position, prey.position)
-    
-
-    def update_belief_prey(self,survey_node,prey_positon):
+    def update_belief_prey(self,survey_node,prey_positon,is_drone_called):
         # Update belief changes the probability of the nodes based on the belief system 
         # 1. If prey was found at survey node--set p_now_prey(survey_node)=1
         # 2. If prey was not found at survey node--set p_now_prey(survey_node)=0, for each X out of nodes, P(X)=P(prey in the node X)*P(prey not in survey node|prey in the node X)/P(prey not in survey node)
-        
+        prob=random.random()
+           
+            
         if survey_node==prey_positon:
-            #1. Prey found scenario
-            self.p_now_prey[survey_node-1]=1
-            #set prob of all other nodes to 0
-            for node in range(1,51):
-                if node!=survey_node:
-                    self.p_now_prey[node-1]=0
+            if prob<=0.9:
+                #1. Prey found scenario
+                self.p_now_prey[survey_node-1]=1
+                #set prob of all other nodes to 0
+                for node in range(1,51):
+                    if node!=survey_node:
+                        self.p_now_prey[node-1]=0
+            else:
+                if is_drone_called:
+                    #2. Prey not found scenario
+                    if self.n_rechecks<1:
+                        self.n_rechecks+=1
+                        self.recheck_survey_node=True
+                    else:
+                        p_new=[0]*50
+                        p_prey_not_in_survey_node=(1-self.p_now_prey[survey_node-1])+(0.1*self.p_now_prey[survey_node-1])
+                        p_new[survey_node-1]=(0.1*self.p_now_prey[survey_node-1])/p_prey_not_in_survey_node
+                        # p_prey_not_in_survey_node=
+                        for node in range(1,51):
+                            if node!=survey_node:
+                                p_prey_in_current_node=self.p_now_prey[node-1]
+                                p_new[node-1]=p_prey_in_current_node/p_prey_not_in_survey_node
+                        
+                        self.p_now_prey=p_new.copy()
+                else:
+                    p_new=[0]*50
+                    p_prey_not_in_survey_node=(1-self.p_now_prey[survey_node-1])+(0.1*self.p_now_prey[survey_node-1])
+                    p_new[survey_node-1]=(0.1*self.p_now_prey[survey_node-1])/p_prey_not_in_survey_node
+                    # p_prey_not_in_survey_node=
+                    for node in range(1,51):
+                        if node!=survey_node:
+                            p_prey_in_current_node=self.p_now_prey[node-1]
+                            p_new[node-1]=p_prey_in_current_node/p_prey_not_in_survey_node
+                    
+                    self.p_now_prey=p_new.copy()
             
         else:
             #2. Prey not found scenario
             p_new=[0]*50
-            p_prey_not_in_survey_node=1-self.p_now_prey[survey_node-1]
+            p_prey_not_in_survey_node=(1-self.p_now_prey[survey_node-1])+(0.1*self.p_now_prey[survey_node-1])
+            p_new[survey_node-1]=(0.1*self.p_now_prey[survey_node-1])/p_prey_not_in_survey_node
+        
             for node in range(1,51):
                 if node!=survey_node:
                     p_prey_in_current_node=self.p_now_prey[node-1]
@@ -133,6 +144,7 @@ class AgentSeven:
             
             self.p_now_prey=p_new.copy()
     #Used- Simplified version
+   
     def transition_update_prey(self):
         # This updates the prob of all nodes, for when the prey moves in the graph
         for update_node in range(1,self.n_nodes+1): # C
@@ -150,23 +162,55 @@ class AgentSeven:
     #Functions of Predator
 
     
-    def update_belief_predator(self,survey_node,predator_position):
+    def update_belief_predator(self,survey_node,predator_position,is_drone_called):
         # Update belief changes the probability of the nodes based on the belief system 
         # 1. If predator was found at survey node--set p_now_predator(survey_node)=1
         # 2. If predator was not found at survey node--set p_now_predator(survey_node)=0, for each X out of nodes, P(X)=P(predator in the node X)*P(predator not in survey node|predator in the node X)/P(predator not in survey node)
-        
+        prob=random.random()
         if survey_node==predator_position:
-            #1. Prey found scenario
-            self.p_now_predator[survey_node-1]=1
-            #set prob of all other nodes to 0
-            for node in range(1,51):
-                if node!=survey_node:
-                    self.p_now_predator[node-1]=0
+            if prob<=0.9:
+                #1. Predator found scenario
+                self.p_now_predator[survey_node-1]=1
+                #set prob of all other nodes to 0
+                for node in range(1,51):
+                    if node!=survey_node:
+                        self.p_now_predator[node-1]=0
+            else:
+                #2. Predator not found scenario
+                if is_drone_called:
+                    if self.n_rechecks<1:
+                        self.recheck_survey_node=True
+                        self.n_rechecks+=1
+                    else:
+                        p_new=[0]*50
+                        p_predator_not_in_survey_node=(1-self.p_now_predator[survey_node-1])+(0.1*self.p_now_predator[survey_node-1])
+                        p_new[survey_node-1]=(0.1*self.p_now_predator[survey_node-1])/p_predator_not_in_survey_node
+                        
+                        for node in range(1,51):
+                            if node!=survey_node:
+                                p_predator_in_current_node=self.p_now_predator[node-1]
+                                p_new[node-1]=p_predator_in_current_node/p_predator_not_in_survey_node
+                        
+                        self.p_now_predator=p_new.copy()
+                        
+                else:
+                    p_new=[0]*50
+                    p_predator_not_in_survey_node=(1-self.p_now_predator[survey_node-1])+(0.1*self.p_now_predator[survey_node-1])
+                    p_new[survey_node-1]=(0.1*self.p_now_predator[survey_node-1])/p_predator_not_in_survey_node
+                    
+                    for node in range(1,51):
+                        if node!=survey_node:
+                            p_predator_in_current_node=self.p_now_predator[node-1]
+                            p_new[node-1]=p_predator_in_current_node/p_predator_not_in_survey_node
+                    
+                    self.p_now_predator=p_new.copy()
             
         else:
             #2. Prey not found scenario
             p_new=[0]*50
-            p_predator_not_in_survey_node=1-self.p_now_predator[survey_node-1]
+
+            p_predator_not_in_survey_node=(1-self.p_now_predator[survey_node-1])+(0.1*self.p_now_predator[survey_node-1])
+            p_new[survey_node-1]=(0.1*self.p_now_predator[survey_node-1])/p_predator_not_in_survey_node
             for node in range(1,51):
                 if node!=survey_node:
                     p_predator_in_current_node=self.p_now_predator[node-1]
@@ -237,13 +281,7 @@ class AgentSeven:
         
             self.p_next_predator[update_node-1]=p_update_node
 
-    def initialize_probabilities(self):
-        #Initialize all prob to 1/49
-        for node in range(self.n_nodes):
-            self.p_now_prey[node]=1/49
 
-        for node in range(self.n_nodes):
-            self.p_now_predator[node]=1/49
 
     def print_state(self):
         #Print current values
@@ -271,7 +309,7 @@ class AgentSeven:
         print("Sum of p_next_predator : ",sum(self.p_next_predator))
 
 
-#Used for testing. Not part of the main flow. AgentSeven simulator will call AgentSeven
+#Used for testing. Not part of the main flow. AgentNine simulator will call AgentNine
 if __name__=="__main__":
 
     n_nodes=50
@@ -279,29 +317,32 @@ if __name__=="__main__":
     prey=Prey(n_nodes,G)
     # prey.position=6
     predator=Predator(n_nodes, G)
-    agent_seven=AgentSeven(n_nodes, G, prey, predator)
-    # survey_list=list(range(1,51))
-    # survey_list.remove(agent_seven.position)
-    # survey_node=random.choice(survey_list)
+    agent_nine=AgentNine(n_nodes, G, prey, predator)
+    survey_list=list(range(1,51))
+    survey_list.remove(agent_nine.position)
+    survey_node=random.choice(survey_list)
     # print("Initial Condtion -> ")
-    # agent_seven.print_state()
-    # agent_seven.simulate_step(prey, predator)
-    # for i in range(1,101):
-    # # while(True):
-    #     print("i = ",i)
-    #     if agent_seven.position==prey.position:
-    #         print("Prey found main")
-    #         break
+    # agent_nine.print_state()
+    # agent_nine.simulate_step(prey, predator)
+    for i in range(1,10):
+    # while(True):
+        print("i = ",i)
+        if agent_nine.position==prey.position:
+            print("Prey found main")
+            break
         
-    #     agent_seven.simulate_step(survey_node,prey, predator)
-    #     agent_seven.print_state()
-    #     m=max(agent_seven.p_now)
-    #     survey_list=[node+1 for node in range(len(agent_seven.p_now)) if agent_seven.p_now[node]==m]
-    #     survey_node=random.choice(survey_list)
+        agent_nine.simulate_step(survey_node,prey, predator)
+        # agent_nine.update_belief_predator(survey_node, predator.position)
+        agent_nine.update_belief_prey(survey_node, prey.position)
+        agent_nine.print_state()
+        m=max(agent_nine.p_now_prey)
+        survey_list=[node+1 for node in range(len(agent_nine.p_now_prey)) if agent_nine.p_now_prey[node]==m]
+        survey_node=random.choice(survey_list)
 
 
     # agent_seven.print_state()
     # for i in range(0,10):
-    #     agent_seven.transition_update()
+    #     # agent_seven.transition_update()
+    #     # agent_seven.update_belief_prey(survey_node, prey_positon)
     #     agent_seven.print_state()
 

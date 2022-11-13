@@ -79,6 +79,11 @@ class AgentSeven:
         # self.update_belief_prey(survey_node, prey.position)
         # self.update_belief_predator(self.position, predator.position)
     
+
+
+
+
+    
     def simulate_step_prey(self,survey_node,prey : Prey,predator:Predator):
         # Simulate step will perform following actions:-
         # 1. Update belief system for finding/not finding prey at current survey node

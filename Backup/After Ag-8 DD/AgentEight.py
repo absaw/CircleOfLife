@@ -2,10 +2,9 @@ from Graph import *
 from BFS import *
 from Prey import *
 from Predator import *
-from AgentOne import *
-from CallableAgentOneFunction import *
+from AgentTwo import *
 
-class AgentSeven:
+class AgentEight:
     
     def __init__(self,n_nodes,G : nx.Graph,prey:Prey, predator:Predator):
         self.n_nodes=n_nodes
@@ -68,16 +67,21 @@ class AgentSeven:
         virtual_predator=Predator(self.n_nodes,self.G)
         virtual_predator.position=virtual_predator_location
         
-        #2. Agent moves with the highest prob_now node of predator with rules of agent One
-        ag_one=AgentOne(self.n_nodes, self.G, virtual_prey, virtual_predator)
-        ag_one.position=self.position
-        ag_one.simulate_step(virtual_prey, virtual_predator)
-        self.position=ag_one.position
+        #2. Agent moves with the highest prob_now node of predator with rules of agent Two
+        ag_two=AgentTwo(self.n_nodes, self.G, virtual_prey, virtual_predator)
+        ag_two.position=self.position
+        ag_two.simulate_step(virtual_prey, virtual_predator)
+        self.position=ag_two.position
         
         #Agent has now moved to the new position, according to agent 1's behaviour
         # 3. Update belief system again
         # self.update_belief_prey(survey_node, prey.position)
         # self.update_belief_predator(self.position, predator.position)
+    
+
+
+
+
     
     def simulate_step_prey(self,survey_node,prey : Prey,predator:Predator):
         # Simulate step will perform following actions:-
@@ -98,11 +102,11 @@ class AgentSeven:
         virtual_prey=Prey(self.n_nodes,self.G)
         virtual_prey.position=prey_virtual_location
         
-        #2. Agent moves towards the highest prob_now node of prey with rules of agent One
-        ag_one=AgentOne(self.n_nodes, self.G, virtual_prey, self.predator)
-        ag_one.position=self.position
-        ag_one.simulate_step(virtual_prey, self.predator)
-        self.position=ag_one.position
+        #2. Agent moves towards the highest prob_now node of prey with rules of agent Two
+        ag_two=AgentTwo(self.n_nodes, self.G, virtual_prey, self.predator)
+        ag_two.position=self.position
+        ag_two.simulate_step(virtual_prey, self.predator)
+        self.position=ag_two.position
         
         #Agent has now moved to the new position, according to agent 1's behaviour
         # 3. Update belief system again
@@ -192,9 +196,9 @@ class AgentSeven:
             for neighbor_of_update_node in neighbors_of_update_node:# neighbor_of_update_node=A,B,D,E
                 degree_of_neighbor_of_update_node=self.G.degree(neighbor_of_update_node)
                 p_update_node+=(0.4)*self.p_now_predator[neighbor_of_update_node-1]/degree_of_neighbor_of_update_node
-                ### 0.4 component done###
+                ### 0.4 comptwont dtwo###
                 
-                ### Beginning 0.6 component ###
+                ### Beginning 0.6 comptwont ###
                 # N1 - neighbor of update node = Suppose B
                 # N2 - neighbor of N1 = Neighbors of B = A,C,D
                 # Shift to Perspective of neighbor - N1 = B
@@ -271,7 +275,7 @@ class AgentSeven:
         print("Sum of p_next_predator : ",sum(self.p_next_predator))
 
 
-#Used for testing. Not part of the main flow. AgentSeven simulator will call AgentSeven
+#Used for testing. Not part of the main flow. AgentEight simulator will call AgentEight
 if __name__=="__main__":
 
     n_nodes=50
@@ -279,7 +283,7 @@ if __name__=="__main__":
     prey=Prey(n_nodes,G)
     # prey.position=6
     predator=Predator(n_nodes, G)
-    agent_seven=AgentSeven(n_nodes, G, prey, predator)
+    agent_seven=AgentEight(n_nodes, G, prey, predator)
     # survey_list=list(range(1,51))
     # survey_list.remove(agent_seven.position)
     # survey_node=random.choice(survey_list)

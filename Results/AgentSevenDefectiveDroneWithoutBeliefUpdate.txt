@@ -1,0 +1,77 @@
+
+
+
+======  Start Time  =========->  11/12/22 20:09:46
+No. of Simulations = 30
+No. of trials for each simulation = 100
+Report for Simulation Number 1
+Player Survivability = 57 %
+Report for Simulation Number 2
+Player Survivability = 50 %
+Report for Simulation Number 3
+Player Survivability = 50 %
+Report for Simulation Number 4
+Player Survivability = 50 %
+Report for Simulation Number 5
+Player Survivability = 55 %
+Report for Simulation Number 6
+Player Survivability = 59 %
+Report for Simulation Number 7
+Player Survivability = 51 %
+Report for Simulation Number 8
+Player Survivability = 59 %
+Report for Simulation Number 9
+Player Survivability = 58 %
+Report for Simulation Number 10
+Player Survivability = 48 %
+Report for Simulation Number 11
+Player Survivability = 51 %
+Report for Simulation Number 12
+Player Survivability = 53 %
+Report for Simulation Number 13
+Player Survivability = 59 %
+Report for Simulation Number 14
+Player Survivability = 53 %
+Report for Simulation Number 15
+Player Survivability = 60 %
+Report for Simulation Number 16
+Player Survivability = 55 %
+Report for Simulation Number 17
+Player Survivability = 52 %
+Report for Simulation Number 18
+Player Survivability = 61 %
+Report for Simulation Number 19
+Player Survivability = 63 %
+Report for Simulation Number 20
+Player Survivability = 59 %
+Report for Simulation Number 21
+Player Survivability = 44 %
+Report for Simulation Number 22
+Player Survivability = 56 %
+Report for Simulation Number 23
+Player Survivability = 55 %
+Report for Simulation Number 24
+Player Survivability = 48 %
+Report for Simulation Number 25
+Player Survivability = 54 %
+Report for Simulation Number 26
+Player Survivability = 54 %
+Report for Simulation Number 27
+Player Survivability = 60 %
+Report for Simulation Number 28
+Player Survivability = 56 %
+Report for Simulation Number 29
+Player Survivability = 54 %
+Report for Simulation Number 30
+Player Survivability = 48 %
+
+Summary : 
+Win List : [57, 50, 50, 50, 55, 59, 51, 59, 58, 48, 51, 53, 59, 53, 60, 55, 52, 61, 63, 59, 44, 56, 55, 48, 54, 54, 60, 56, 54, 48]
+Lose List : [42, 50, 50, 49, 43, 40, 49, 41, 40, 52, 49, 46, 39, 47, 40, 44, 48, 39, 37, 41, 56, 44, 45, 51, 44, 46, 40, 44, 45, 52]
+Average wins : 54
+Average losses : 45
+Average hangs : 0
+Average steps : 20
+Hang Threshold : 100
+
+Execution Time = 826.9284489154816 s
