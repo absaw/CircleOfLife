@@ -161,8 +161,8 @@ def simulate_agent_eight():
         lose_list.append(n_lose)
         hang_list.append(n_hang)
         step_list.append(n_steps/n_win)
-        # print("Sim - ",sim)
-        # print("Wins = ",n_win)
+        print("Sim - ",sim)
+        print("Wins = ",n_win)
         #Log file
         time_now=datetime.now().strftime("%m/%d/%y %H:%M:%S")
         file.write("\nReport for Simulation Number %d" % sim)
@@ -194,7 +194,7 @@ def simulate_agent_eight():
     file.close()
     # Log file End
     print("Done!")
-# simulate_agent_eight()
+simulate_agent_eight()
 
 
                             

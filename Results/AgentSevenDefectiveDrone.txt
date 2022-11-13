@@ -1,0 +1,77 @@
+
+
+
+======  Start Time  =========->  11/12/22 18:43:53
+No. of Simulations = 30
+No. of trials for each simulation = 100
+Report for Simulation Number 1
+Player Survivability = 62 %
+Report for Simulation Number 2
+Player Survivability = 67 %
+Report for Simulation Number 3
+Player Survivability = 67 %
+Report for Simulation Number 4
+Player Survivability = 62 %
+Report for Simulation Number 5
+Player Survivability = 66 %
+Report for Simulation Number 6
+Player Survivability = 64 %
+Report for Simulation Number 7
+Player Survivability = 67 %
+Report for Simulation Number 8
+Player Survivability = 62 %
+Report for Simulation Number 9
+Player Survivability = 69 %
+Report for Simulation Number 10
+Player Survivability = 63 %
+Report for Simulation Number 11
+Player Survivability = 65 %
+Report for Simulation Number 12
+Player Survivability = 64 %
+Report for Simulation Number 13
+Player Survivability = 67 %
+Report for Simulation Number 14
+Player Survivability = 72 %
+Report for Simulation Number 15
+Player Survivability = 59 %
+Report for Simulation Number 16
+Player Survivability = 60 %
+Report for Simulation Number 17
+Player Survivability = 69 %
+Report for Simulation Number 18
+Player Survivability = 58 %
+Report for Simulation Number 19
+Player Survivability = 61 %
+Report for Simulation Number 20
+Player Survivability = 65 %
+Report for Simulation Number 21
+Player Survivability = 63 %
+Report for Simulation Number 22
+Player Survivability = 58 %
+Report for Simulation Number 23
+Player Survivability = 63 %
+Report for Simulation Number 24
+Player Survivability = 62 %
+Report for Simulation Number 25
+Player Survivability = 61 %
+Report for Simulation Number 26
+Player Survivability = 66 %
+Report for Simulation Number 27
+Player Survivability = 60 %
+Report for Simulation Number 28
+Player Survivability = 61 %
+Report for Simulation Number 29
+Player Survivability = 67 %
+Report for Simulation Number 30
+Player Survivability = 60 %
+
+Summary : 
+Win List : [62, 67, 67, 62, 66, 64, 67, 62, 69, 63, 65, 64, 67, 72, 59, 60, 69, 58, 61, 65, 63, 58, 63, 62, 61, 66, 60, 61, 67, 60]
+Lose List : [38, 33, 31, 38, 34, 34, 33, 38, 29, 37, 35, 36, 32, 28, 40, 40, 31, 40, 38, 35, 36, 42, 37, 38, 39, 33, 39, 39, 31, 37]
+Average wins : 63
+Average losses : 35
+Average hangs : 0
+Average steps : 21
+Hang Threshold : 100
+
+Execution Time = 870.2472598552704 s
