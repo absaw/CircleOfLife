@@ -2,10 +2,9 @@ from Graph import *
 from BFS import *
 from Prey import *
 from Predator import *
-from AgentTwo import *
+from AgentOne import *
 import copy
-from CallableAgentOneFunction import *
-class AgentFour:
+class AgentThree:
     
     def __init__(self,n_nodes,G : nx.Graph,prey:Prey, predator:Predator):
         self.n_nodes=n_nodes
@@ -22,7 +21,8 @@ class AgentFour:
         # Initialize the probablities of all the nodes in the graph
         self.initialize_probabilities()
         self.p_now[self.position-1]=0
-        self.sure_of_prey=0
+
+        self.survey=True
 
     def simulate_step(self,survey_node,prey : Prey,predator:Predator):
         # Simulate step will perform following actions:-
@@ -33,8 +33,8 @@ class AgentFour:
         #Prey's position here is only used to check if the surveyed node is the prey's node or not
        
         # 1. Belief update based on surveyed node
-        self.update_belief(survey_node, prey.position)
-        G_copy=copy.deepcopy(self.G)
+        # self.update_belief(survey_node, prey.position)
+        # G_copy=copy.deepcopy(self.G)
         
         m=max(self.p_now)
         max_prob_list=[node+1 for node in range(len(self.p_now)) if self.p_now[node]==m]
@@ -44,14 +44,14 @@ class AgentFour:
         virtual_prey.position=prey_virtual_location
         
         #2. Agent moves towards the highest prob_now node of prey with rules of agent One
-        ag_two=AgentTwo(self.n_nodes, self.G, virtual_prey, self.predator)
-        ag_two.position=self.position
-        ag_two.simulate_step(virtual_prey, self.predator)
-        self.position=ag_two.position
+        ag_one=AgentOne(self.n_nodes, self.G, virtual_prey, self.predator)
+        ag_one.position=self.position
+        ag_one.simulate_step(virtual_prey, self.predator)
+        self.position=ag_one.position
         
         #Agent has now moved to the new position, according to agent 1's behaviour
         # 3. Update belief system again
-        self.update_belief(self.position, prey.position)
+        # self.update_belief(self.position, prey.position)
     
 
     def update_belief(self,survey_node,prey_positon):
@@ -66,7 +66,6 @@ class AgentFour:
             for node in range(1,51):
                 if node!=survey_node:
                     self.p_now[node-1]=0
-            self.sure_of_prey+=1
             
         else:
             #2. Prey not found scenario
@@ -92,6 +91,24 @@ class AgentFour:
         
             self.p_next[update_node-1]=p_update_node
     
+    # Not Used--Too complex version
+    def transition_update_old_unused(self):
+        # This updates the prob of all nodes, for when the prey moves in the graph
+        for survey_node in range(1,self.n_nodes+1):
+            set_next_prob_list=list(self.G.neighbors(survey_node))+[survey_node] # A,B,C,Sn
+
+            for node in set_next_prob_list: # node = A,B,C,S
+                set_next_prob_list_neighbor=list(self.G.neighbors(node))+[node]
+                p_node_2=0
+                for node_2 in set_next_prob_list_neighbor:
+                    if self.G.degree(node_2)==3:
+                        multiplier=4
+                    else:
+                        multiplier=3
+                    p_node_2+=self.p_now[node_2-1]/multiplier
+                
+                self.p_next[node-1]=p_node_2
+
     def initialize_probabilities(self):
         #Initialize all prob to 1/49
         for node in range(self.n_nodes):
@@ -124,7 +141,7 @@ class AgentFour:
         print("Sum of P_next : ",sum(self.p_next))
 
 
-#Used for testing. Not part of the main flow. AgentFour simulator will call AgentFour
+#Used for testing. Not part of the main flow. AgentThree simulator will call AgentThree
 if __name__=="__main__":
 
     n_nodes=50
@@ -132,31 +149,31 @@ if __name__=="__main__":
     prey=Prey(n_nodes,G)
     # prey.position=6
     predator=Predator(n_nodes, G)
-    agent_four=AgentFour(n_nodes, G, prey, predator)
+    agent_three=AgentThree(n_nodes, G, prey, predator)
     survey_list=list(range(1,51))
-    survey_list.remove(agent_four.position)
+    survey_list.remove(agent_three.position)
     survey_node=random.choice(survey_list)
     # print("Initial Condtion -> ")
-    # agent_four.print_state()
-    # agent_four.simulate_step(prey, predator)
+    # agent_three.print_state()
+    # agent_three.simulate_step(prey, predator)
     # for i in range(1,101):
     # # while(True):
     #     print("i = ",i)
-    #     if agent_four.position==prey.position:
+    #     if agent_three.position==prey.position:
     #         print("Prey found main")
     #         break
         
-    #     agent_four.simulate_step(survey_node,prey, predator)
-    #     agent_four.print_state()
-    #     m=max(agent_four.p_now)
-    #     survey_list=[node+1 for node in range(len(agent_four.p_now)) if agent_four.p_now[node]==m]
+    #     agent_three.simulate_step(survey_node,prey, predator)
+    #     agent_three.print_state()
+    #     m=max(agent_three.p_now)
+    #     survey_list=[node+1 for node in range(len(agent_three.p_now)) if agent_three.p_now[node]==m]
     #     survey_node=random.choice(survey_list)
 
 
-    # agent_four.print_state()
+    # agent_three.print_state()
     for i in range(0,10):
-        agent_four.transition_update()
-        agent_four.print_state()
+        agent_three.transition_update()
+        agent_three.print_state()
 
 
 # def transition_update(self,survey_node):

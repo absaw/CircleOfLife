@@ -21,7 +21,6 @@ class AgentFive:
         # Initialize the probablities of all the nodes in the graph
         self.initialize_probabilities()
         self.p_now[self.position-1]=0
-        self.sure_of_predator=0
 
     def simulate_step(self,survey_node,prey : Prey,predator:Predator):
         # Simulate step will perform following actions:-
@@ -79,7 +78,6 @@ class AgentFive:
             for node in range(1,51):
                 if node!=survey_node:
                     self.p_now[node-1]=0
-            self.sure_of_predator+=1
             
         else:
             #2. Prey not found scenario

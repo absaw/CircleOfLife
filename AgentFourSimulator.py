@@ -16,7 +16,8 @@ def simulate_agent_four():
     file=open(filename_txt,"a")
     csvfile = open(filename_csv, "a")
     csv_writer=csv.writer(csvfile)
-    fields=['Date Time','Simulation Number','Number of Graphs','Won','Died','Hanged','No. of Steps','Comments']
+    fields=['Date Time','Simulation Number','Number of Graphs','Won','Died','Hanged','No. of Steps','Frequency of Knowing Exact Location','Comments']
+
     csv_writer.writerow(fields)
     text = "\n\n\n======  Start Time  =========->  " + \
         datetime.now().strftime("%m/%d/%y %H:%M:%S")
@@ -35,6 +36,8 @@ def simulate_agent_four():
     lose_list=[]
     hang_list=[]
     step_list=[]
+    sure_list=[]
+
     for sim in range(1,n_sim+1):
         n_win=0     # When agent and prey are in same position, provided pred is not in that position
         n_lose=0    # When agent and predator are in same position
@@ -42,7 +45,7 @@ def simulate_agent_four():
         hang_threshold=100
         max_steps=300
         n_steps=0
-
+        n_sure=0
         for trial in range(1,n_trials+1):
 
             #generate graph
@@ -122,18 +125,22 @@ def simulate_agent_four():
                 m=max(agent_four.p_now) #finding value with highest prob
                 survey_list=[node+1 for node in range(len(agent_four.p_now)) if agent_four.p_now[node]==m] # List of nodes with highest prob value
                 survey_node=random.choice(survey_list) #Selecting a random element from highest prob value list
+            n_sure+=agent_four.sure_of_prey
 
 
         win_list.append(n_win)
         lose_list.append(n_lose)
         hang_list.append(n_hang)
         step_list.append(n_steps/n_win)
+        sure_list.append(n_sure/n_trials)
 
         #Log file
         time_now=datetime.now().strftime("%m/%d/%y %H:%M:%S")
         file.write("\nReport for Simulation Number %d" % sim)
         file.write("\nPlayer Survivability = %d" % n_win+" %")
-        csv_writer.writerow([time_now,sim,100,str(n_win),str(n_lose),str(n_hang),str(n_steps/n_win)])
+        # csv_writer.writerow([time_now,sim,100,str(n_win),str(n_lose),str(n_hang),str(n_steps/n_win)])
+        csv_writer.writerow([time_now,sim,100,str(n_win),str(n_lose),str(n_hang),str(n_steps/n_win),str(n_sure/n_trials)])
+
         #Log File
 
     print("Win List : ",*win_list)
@@ -144,17 +151,19 @@ def simulate_agent_four():
     print("Average losses : ",(sum(lose_list)/len(lose_list)))
     print("Average hangs : ",(sum(hang_list)/len(hang_list)))
     print("Average steps : ",(sum(step_list)/len(step_list)))
+    print("Average No. of times Agent was sure about Prey's Location : ",(sum(sure_list)/len(sure_list)))
     print("Hang Threshold : ",hang_threshold)
 
     # Log file Start
     file.write("\n\nSummary : ")
     file.write("\nWin List : "+str(win_list))
     file.write("\nLose List : "+str(lose_list))
-    file.write("\nAverage wins : %d" % (sum(win_list)/len(win_list)))
-    file.write("\nAverage losses : %d" % (sum(lose_list)/len(lose_list)))
-    file.write("\nAverage hangs : %d" % (sum(hang_list)/len(hang_list)))
-    file.write("\nAverage steps : %d" % (sum(step_list)/len(step_list)))
-    file.write("\nHang Threshold : %d" % hang_threshold)
+    file.write("\nAverage wins : %.2f" % (sum(win_list)/len(win_list)))
+    file.write("\nAverage losses : %.2f" % (sum(lose_list)/len(lose_list)))
+    file.write("\nAverage hangs : %.2f" % (sum(hang_list)/len(hang_list)))
+    file.write("\nAverage steps : %.2f" % (sum(step_list)/len(step_list)))
+    file.write("\nAverage No. of times Agent was sure about Prey's Location : %2f" % (sum(sure_list)/len(sure_list)))
+    file.write("\nHang Threshold : %.2f" % hang_threshold)
     end=time()
     file.write("\n\nExecution Time = "+str(end-start)+" s")
     print("Execution time : "+str(end-start)+" s")

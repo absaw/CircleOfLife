@@ -1,11 +1,5 @@
 Date Time,Simulation Number,Number of Graphs,Won,Died,Hanged,No. of Steps,Comments
 Execution Started
-11/12/22 20:47:18,1,100,1,0,0,31.0
-Date Time,Simulation Number,Number of Graphs,Won,Died,Hanged,No. of Steps,Comments
-Execution Started
-11/12/22 20:51:09,1,100,70,30,0,19.442857142857143
-Date Time,Simulation Number,Number of Graphs,Won,Died,Hanged,No. of Steps,Comments
-Execution Started
 11/12/22 20:52:30,1,100,67,33,0,20.223880597014926
 11/12/22 20:52:58,2,100,66,34,0,20.515151515151516
 11/12/22 20:53:23,3,100,71,29,0,17.746478873239436
@@ -36,10 +30,3 @@ Execution Started
 11/12/22 21:04:38,28,100,65,35,0,21.446153846153845
 11/12/22 21:05:04,29,100,67,33,0,20.029850746268657
 11/12/22 21:05:31,30,100,69,31,0,20.82608695652174
-Date Time,Simulation Number,Number of Graphs,Won,Died,Hanged,No. of Steps,Comments
-Execution Started
-11/12/22 21:15:49,1,100,67,32,1,18.970149253731343
-11/12/22 21:16:20,2,100,64,34,2,20.9375
-11/12/22 21:16:50,3,100,75,24,1,23.706666666666667
-11/12/22 21:17:20,4,100,69,31,0,21.956521739130434
-11/12/22 21:17:46,5,100,62,36,2,19.225806451612904

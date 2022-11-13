@@ -4,15 +4,15 @@ from Graph import *
 from BFS import *
 from Prey import *
 from Predator import *
-from AgentFive import *
+from AgentThree import *
 import csv
 from time import time
 from datetime import datetime
-def simulate_agent_five():
+def simulate_agent_three():
     #=========== Log file =======================
     start = time()
-    filename_txt="Results/AgentFive.txt"
-    filename_csv="Results/AgentFive.csv"
+    filename_txt="Results/AgentThree.txt"
+    filename_csv="Results/AgentThree.csv"
     file=open(filename_txt,"a")
     csvfile = open(filename_csv, "a")
     csv_writer=csv.writer(csvfile)
@@ -26,8 +26,6 @@ def simulate_agent_five():
     csv_writer.writerow(["Execution Started"])
 
     #============================================
-
-
     n_sim=30      # No. of simulations
     n_trials=100    # No. of Trials. Each trial has a random new graph. Final Metrics of one simulation will be calculated from these 100 trials
                     # We then average out the metrics, from the 30 simulations we have, to eventually get the final results.
@@ -54,25 +52,22 @@ def simulate_agent_five():
             #spawn prey, predator and agent at random locations
             prey=Prey(n_nodes,G)
             predator=Predator(n_nodes, G)
-            agent_five=AgentFive(n_nodes, G, prey, predator)
+            agent_three=AgentThree(n_nodes, G, prey, predator)
             
             steps=0
-            # survey_list=list(range(1,51))
-            # survey_list.remove(agent_five.position)
-            # survey_node=random.choice(survey_list)
-
-            #We know the predator's position initially so we start by surveying that node
-            survey_node=predator.position
+            survey_list=list(range(1,51))
+            survey_list.remove(agent_three.position)
+            survey_node=random.choice(survey_list)
             # The three players move in rounds, starting with the Agent, followed by the Prey, and then the Predator.
             while(steps<=max_steps):
                 steps+=1
                 # print("\n\nStep ->>>>> ",steps)
-                # agent_five.print_state()
+                # agent_three.print_state()
                 # ========= Terminal Condition Check  ========
-                if agent_five.position==predator.position:
+                if agent_three.position==predator.position:
                     n_lose+=1
                     break
-                if agent_five.position==prey.position:
+                if agent_three.position==prey.position:
                     # print("Prey found")
                     n_win+=1
                     n_steps+=steps
@@ -82,89 +77,96 @@ def simulate_agent_five():
                     # print("hanged")
                     n_hang+=1
                     break
-               
-                #========= Agent Five Simulation  ========
-                agent_five.simulate_step(survey_node,prey,predator)
-                # Now we have our agent's next position
+                #This agent can only survey OR move in one round. We can alternate between surveying and moving in each
+                #round, so that there is equal progress made in movement as well as update belief on an overall number of moves 
+                # This part of code will update the belief based on the survey node
+                d_predator=len(get_bfs_path(agent_three.G, agent_three.position, predator.position)[1])  #Distance from predator
+                pred_dist_threshold=3
+                if d_predator<pred_dist_threshold:
+                    agent_three.simulate_step(survey_node,prey, predator)
+                    # Now we have our agent's next position
+                    #Updating belief based on current agent position
+                    agent_three.update_belief(survey_node, prey.position)
+                else:
+                    if agent_three.survey:
+                        agent_three.update_belief(survey_node, prey.position)
+                        # print("Survey done")
+                        agent_three.survey=False
+                    
+                    else :
+                        #========= Agent Three Simulation  ========
+                        agent_three.simulate_step(survey_node,prey, predator)
+                        # Now we have our agent's next position
+                        #Updating belief based on current agent position
+                        agent_three.update_belief(survey_node, prey.position)
+                        agent_three.survey=True #So that suvery is done 
+                        # print("Survey not done")
+
+
                 # ========= Terminal Condition Check  ========
-                if agent_five.position==predator.position:
+                if agent_three.position==predator.position:
                     n_lose+=1
                     break
-                if agent_five.position==prey.position:
+                if agent_three.position==prey.position:
                     n_win+=1
                     n_steps+=steps
                     break
-                # New Info : Predator is not in current agent's position. So update belief system
-                # agent_five.update_belief(agent_five.position, prey.position)
+
 
                 # ======== Prey Simulation   =========
                 prey.simulate_step()
-                
-                # agent_five.print_sum()
+                # New Info : Prey has moved. So update apply transition probability update to each node in graph
+                agent_three.transition_update()
+                agent_three.p_now=agent_three.p_next.copy()
+                #agent_three.print_sum()
 
                 #========= Terminal Condition Check  ========
-                if agent_five.position==prey.position:
+                if agent_three.position==prey.position:
                     n_win+=1
                     n_steps+=steps
                     break
+                # New Info : Prey is not in current agent's position. So update belief system
+                # agent_three.update_belief(agent_three.position, prey.position)
                 
+                #agent_three.print_sum()
                 
                 # ======== Predator Simulation   =========
-                predator.simulate_step_distracted(agent_five.position)
-                # New Info : Predator has moved. So update apply transition probability update to each node in graph
-                agent_five.transition_update()
-                agent_five.p_now=agent_five.p_next.copy()
-                # agent_five.print_sum()
+                predator.simulate_step(agent_three.position)
 
                 # ========= Terminal Condition Check  ========
-                if agent_five.position==predator.position:
+                if agent_three.position==predator.position:
                     n_lose+=1
                     break
-                if agent_five.position==prey.position:
+                if agent_three.position==prey.position:
                     n_win+=1
                     n_steps+=steps
                     break
 
-                m=max(agent_five.p_now) #finding value with highest prob
-                max_prob_list=[node+1 for node in range(len(agent_five.p_now)) if agent_five.p_now[node]==m] # List of nodes with highest prob value
-                
-                #Choosing node with max prob and min distance from agent's position
-                distance_from_agent_list=[]
-                for max_prob_node in max_prob_list:
-                    distance_from_agent_list.append(len(get_bfs_path(G, max_prob_node, agent_five.position)[1]))
-                min_distance=min(distance_from_agent_list)
-                min_distance_list=[]
-                for max_prob_node_index in range(len(max_prob_list)):
-                    if min_distance==distance_from_agent_list[max_prob_node_index]:
-                        min_distance_list.append(max_prob_list[max_prob_node_index])
-                
-                survey_node=random.choice(min_distance_list)
-                # survey_node=random.choice(survey_list) #Selecting a random element from highest prob value list
+                m=max(agent_three.p_now) #finding value with highest prob
+                survey_list=[node+1 for node in range(len(agent_three.p_now)) if agent_three.p_now[node]==m] # List of nodes with highest prob value
+                survey_node=random.choice(survey_list) #Selecting a random element from highest prob value list
+
 
         win_list.append(n_win)
         lose_list.append(n_lose)
         hang_list.append(n_hang)
         step_list.append(n_steps/n_win)
-        # print("Simulation - ",sim)
-        # print("Wins = ",n_win)
-
-        #Log file
+        
         time_now=datetime.now().strftime("%m/%d/%y %H:%M:%S")
         file.write("\nReport for Simulation Number %d" % sim)
         file.write("\nPlayer Survivability = %d" % n_win+" %")
         csv_writer.writerow([time_now,sim,100,str(n_win),str(n_lose),str(n_hang),str(n_steps/n_win)])
-        #Log File
-
+    
     print("Win List : ",*win_list)
     print("Lose List : ",*lose_list)
     print("Hang List : ",*hang_list)
-    print("Step List : ",*step_list)
+    # print("Step List : ",*step_list)
     print("Average wins : ",(sum(win_list)/len(win_list)))
     print("Average losses : ",(sum(lose_list)/len(lose_list)))
     print("Average hangs : ",(sum(hang_list)/len(hang_list)))
     print("Average steps : ",(sum(step_list)/len(step_list)))
     print("Hang Threshold : ",hang_threshold)
-
+    
     # Log file Start
     file.write("\n\nSummary : ")
     file.write("\nWin List : "+str(win_list))
@@ -179,9 +181,7 @@ def simulate_agent_five():
     print("Execution time : "+str(end-start)+" s")
     file.close()
     # Log file End
-    print("Done!")
-
-simulate_agent_five()
+simulate_agent_three()
 
 
                             

@@ -22,6 +22,7 @@ class AgentThree:
         # Initialize the probablities of all the nodes in the graph
         self.initialize_probabilities()
         self.p_now[self.position-1]=0
+        self.sure_of_prey=0
 
     def simulate_step(self,survey_node,prey : Prey,predator:Predator):
         # Simulate step will perform following actions:-
@@ -65,7 +66,7 @@ class AgentThree:
             for node in range(1,51):
                 if node!=survey_node:
                     self.p_now[node-1]=0
-            
+            self.sure_of_prey+=1
         else:
             #2. Prey not found scenario
             p_new=[0]*50
@@ -89,24 +90,6 @@ class AgentThree:
                 p_update_node+=self.p_now[neighbor_of_update_node-1]/(degree_of_neighbor_of_update_node+1)
         
             self.p_next[update_node-1]=p_update_node
-    
-    # Not Used--Too complex version
-    def transition_update_old_unused(self):
-        # This updates the prob of all nodes, for when the prey moves in the graph
-        for survey_node in range(1,self.n_nodes+1):
-            set_next_prob_list=list(self.G.neighbors(survey_node))+[survey_node] # A,B,C,Sn
-
-            for node in set_next_prob_list: # node = A,B,C,S
-                set_next_prob_list_neighbor=list(self.G.neighbors(node))+[node]
-                p_node_2=0
-                for node_2 in set_next_prob_list_neighbor:
-                    if self.G.degree(node_2)==3:
-                        multiplier=4
-                    else:
-                        multiplier=3
-                    p_node_2+=self.p_now[node_2-1]/multiplier
-                
-                self.p_next[node-1]=p_node_2
 
     def initialize_probabilities(self):
         #Initialize all prob to 1/49

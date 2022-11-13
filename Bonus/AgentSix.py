@@ -2,9 +2,9 @@ from Graph import *
 from BFS import *
 from Prey import *
 from Predator import *
-from AgentOne import *
+from AgentTwo import *
 from CallableAgentOneFunction import *
-class AgentFive:
+class AgentSix:
     
     def __init__(self,n_nodes,G : nx.Graph,prey:Prey, predator:Predator):
         self.n_nodes=n_nodes
@@ -21,7 +21,6 @@ class AgentFive:
         # Initialize the probablities of all the nodes in the graph
         self.initialize_probabilities()
         self.p_now[self.position-1]=0
-        self.sure_of_predator=0
 
     def simulate_step(self,survey_node,prey : Prey,predator:Predator):
         # Simulate step will perform following actions:-
@@ -56,11 +55,11 @@ class AgentFive:
         virtual_predator=Predator(self.n_nodes,self.G)
         virtual_predator.position=virtual_predator_location
         
-        #2. Agent moves with the highest prob_now node of predator with rules of agent One
-        ag_one=AgentOne(self.n_nodes, self.G, self.prey, virtual_predator)
-        ag_one.position=self.position
-        ag_one.simulate_step(self.prey, virtual_predator)
-        self.position=ag_one.position
+        #2. Agent moves with the highest prob_now node of predator with rules of agent Two
+        ag_two=AgentTwo(self.n_nodes, self.G, self.prey, virtual_predator)
+        ag_two.position=self.position
+        ag_two.simulate_step(self.prey, virtual_predator)
+        self.position=ag_two.position
         
         #Agent has now moved to the new position, according to agent 1's behaviour
         # 3. Update belief system again
@@ -79,7 +78,6 @@ class AgentFive:
             for node in range(1,51):
                 if node!=survey_node:
                     self.p_now[node-1]=0
-            self.sure_of_predator+=1
             
         else:
             #2. Prey not found scenario
@@ -234,7 +232,7 @@ class AgentFive:
         print("Sum of P_next : ",sum(self.p_next))
 
 
-#Used for testing. Not part of the main flow. AgentFive simulator will call AgentFive
+#Used for testing. Not part of the main flow. AgentSix simulator will call AgentSix
 if __name__=="__main__":
 
     n_nodes=50
@@ -242,31 +240,31 @@ if __name__=="__main__":
     prey=Prey(n_nodes,G)
     # prey.position=6
     predator=Predator(n_nodes, G)
-    agent_five=AgentFive(n_nodes, G, prey, predator)
+    agent_six=AgentSix(n_nodes, G, prey, predator)
     # survey_list=list(range(1,51))
-    # survey_list.remove(agent_five.position)
+    # survey_list.remove(agent_six.position)
     # survey_node=random.choice(survey_list)
     # print("Initial Condtion -> ")
-    # agent_five.print_state()
-    # agent_five.simulate_step(prey, predator)
+    # agent_six.print_state()
+    # agent_six.simulate_step(prey, predator)
     # for i in range(1,101):
     # # while(True):
     #     print("i = ",i)
-    #     if agent_five.position==prey.position:
+    #     if agent_six.position==prey.position:
     #         print("Prey found main")
     #         break
         
-    #     agent_five.simulate_step(survey_node,prey, predator)
-    #     agent_five.print_state()
-    #     m=max(agent_five.p_now)
-    #     survey_list=[node+1 for node in range(len(agent_five.p_now)) if agent_five.p_now[node]==m]
+    #     agent_six.simulate_step(survey_node,prey, predator)
+    #     agent_six.print_state()
+    #     m=max(agent_six.p_now)
+    #     survey_list=[node+1 for node in range(len(agent_six.p_now)) if agent_six.p_now[node]==m]
     #     survey_node=random.choice(survey_list)
 
 
-    # agent_five.print_state()
+    # agent_six.print_state()
     # for i in range(0,10):
-    #     agent_five.transition_update()
-    #     agent_five.print_state()
+    #     agent_six.transition_update()
+    #     agent_six.print_state()
 
 
 # def transition_update(self,survey_node):

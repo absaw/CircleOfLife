@@ -75,3 +75,84 @@ Average steps : 22
 Hang Threshold : 100
 
 Execution Time = 59.88022994995117 s
+
+
+======  Start Time  =========->  11/13/22 14:42:04
+No. of Simulations = 30
+No. of trials for each simulation = 100
+
+
+======  Start Time  =========->  11/13/22 14:42:45
+No. of Simulations = 30
+No. of trials for each simulation = 100
+Report for Simulation Number 1
+Player Survivability = 95 %
+Report for Simulation Number 2
+Player Survivability = 90 %
+Report for Simulation Number 3
+Player Survivability = 90 %
+Report for Simulation Number 4
+Player Survivability = 94 %
+Report for Simulation Number 5
+Player Survivability = 87 %
+Report for Simulation Number 6
+Player Survivability = 94 %
+Report for Simulation Number 7
+Player Survivability = 94 %
+Report for Simulation Number 8
+Player Survivability = 93 %
+Report for Simulation Number 9
+Player Survivability = 89 %
+Report for Simulation Number 10
+Player Survivability = 92 %
+Report for Simulation Number 11
+Player Survivability = 93 %
+Report for Simulation Number 12
+Player Survivability = 87 %
+Report for Simulation Number 13
+Player Survivability = 95 %
+Report for Simulation Number 14
+Player Survivability = 92 %
+Report for Simulation Number 15
+Player Survivability = 95 %
+Report for Simulation Number 16
+Player Survivability = 94 %
+Report for Simulation Number 17
+Player Survivability = 90 %
+Report for Simulation Number 18
+Player Survivability = 92 %
+Report for Simulation Number 19
+Player Survivability = 91 %
+Report for Simulation Number 20
+Player Survivability = 94 %
+Report for Simulation Number 21
+Player Survivability = 95 %
+Report for Simulation Number 22
+Player Survivability = 90 %
+Report for Simulation Number 23
+Player Survivability = 92 %
+Report for Simulation Number 24
+Player Survivability = 86 %
+Report for Simulation Number 25
+Player Survivability = 92 %
+Report for Simulation Number 26
+Player Survivability = 94 %
+Report for Simulation Number 27
+Player Survivability = 92 %
+Report for Simulation Number 28
+Player Survivability = 94 %
+Report for Simulation Number 29
+Player Survivability = 94 %
+Report for Simulation Number 30
+Player Survivability = 90 %
+
+Summary : 
+Win List : [95, 90, 90, 94, 87, 94, 94, 93, 89, 92, 93, 87, 95, 92, 95, 94, 90, 92, 91, 94, 95, 90, 92, 86, 92, 94, 92, 94, 94, 90]
+Lose List : [4, 9, 10, 5, 11, 6, 6, 6, 11, 8, 7, 12, 5, 7, 5, 6, 9, 8, 9, 6, 5, 9, 8, 13, 7, 6, 8, 4, 6, 9]
+Average wins : 92.00
+Average losses : 7.50
+Average hangs : 0.50
+Average steps : 22.23Average No. of times Agent was sure about Prey's Location : 2.052333
+Hang Threshold : 100.00
+
+Execution Time = 58.34775495529175 s
