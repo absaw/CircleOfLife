@@ -416,3 +416,78 @@ Average hangs : 0
 Hang Threshold : 100
 
 Execution Time = 8.602307081222534 s
+
+
+======  Start Time  =========->  11/15/22 09:06:53
+No. of Simulations = 30
+No. of trials for each simulation = 100
+Report for Simulation Number 1
+Player Survivability = 93 %
+Report for Simulation Number 2
+Player Survivability = 86 %
+Report for Simulation Number 3
+Player Survivability = 90 %
+Report for Simulation Number 4
+Player Survivability = 87 %
+Report for Simulation Number 5
+Player Survivability = 90 %
+Report for Simulation Number 6
+Player Survivability = 91 %
+Report for Simulation Number 7
+Player Survivability = 84 %
+Report for Simulation Number 8
+Player Survivability = 86 %
+Report for Simulation Number 9
+Player Survivability = 89 %
+Report for Simulation Number 10
+Player Survivability = 91 %
+Report for Simulation Number 11
+Player Survivability = 87 %
+Report for Simulation Number 12
+Player Survivability = 87 %
+Report for Simulation Number 13
+Player Survivability = 92 %
+Report for Simulation Number 14
+Player Survivability = 92 %
+Report for Simulation Number 15
+Player Survivability = 90 %
+Report for Simulation Number 16
+Player Survivability = 91 %
+Report for Simulation Number 17
+Player Survivability = 85 %
+Report for Simulation Number 18
+Player Survivability = 92 %
+Report for Simulation Number 19
+Player Survivability = 90 %
+Report for Simulation Number 20
+Player Survivability = 91 %
+Report for Simulation Number 21
+Player Survivability = 88 %
+Report for Simulation Number 22
+Player Survivability = 88 %
+Report for Simulation Number 23
+Player Survivability = 90 %
+Report for Simulation Number 24
+Player Survivability = 88 %
+Report for Simulation Number 25
+Player Survivability = 90 %
+Report for Simulation Number 26
+Player Survivability = 89 %
+Report for Simulation Number 27
+Player Survivability = 88 %
+Report for Simulation Number 28
+Player Survivability = 88 %
+Report for Simulation Number 29
+Player Survivability = 87 %
+Report for Simulation Number 30
+Player Survivability = 84 %
+
+Summary : 
+Win List : [93, 86, 90, 87, 90, 91, 84, 86, 89, 91, 87, 87, 92, 92, 90, 91, 85, 92, 90, 91, 88, 88, 90, 88, 90, 89, 88, 88, 87, 84]
+Lose List : [7, 14, 10, 13, 10, 9, 16, 14, 11, 9, 13, 13, 8, 8, 10, 9, 15, 8, 10, 9, 12, 12, 10, 12, 10, 11, 12, 12, 13, 16]
+Average wins : 88.80
+Average losses : 11.20
+Average hangs : 0.00
+Hang Threshold : 1000.00
+
+Execution Time = 8.81479287147522 s

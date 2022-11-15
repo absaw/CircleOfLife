@@ -36,6 +36,21 @@ class AgentTwo:
         
         run_from_pred_threshold=3
 
+        # cycles=list(nx.cycle_basis(self.G.to_undirected()))
+        # # print("Cycle list ->",*cycles)
+        # small_cycles=[]
+        # print("Cycles with length less than 5")
+        # for i in cycles:
+        #     if len(i)<5:
+        #         small_cycles.append(i)
+        #         print(*i)
+        # nodes_to_avoid=[]
+        # for node in range(1,51):
+        #     if 2<=node<=49:
+        #         if self.G.has_edge(node-1, node+1):
+        #             nodes_to_avoid.append(node)
+        #     elif node==1 or node == 50:
+        #         if self.G.has_edge(u, v)
 
         if d_predator<run_from_pred_threshold:
 

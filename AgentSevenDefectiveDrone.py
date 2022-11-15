@@ -179,15 +179,15 @@ class AgentSevenDefectiveDrone:
         prob=random.random()
         if survey_node==predator_position:
             if prob<=0.9:
-                #1. Prey found scenario
+                #1. Predator found scenario
                 self.p_now_predator[survey_node-1]=1
                 #set prob of all other nodes to 0
                 for node in range(1,51):
                     if node!=survey_node:
                         self.p_now_predator[node-1]=0
             else:
-                #prey not found scenario
-                #2. Prey not found scenario
+                #predator not found scenario
+                #2. Predator not found scenario
                 p_new=[0]*50
                 p_predator_not_in_survey_node=(1-self.p_now_predator[survey_node-1])+(0.1*self.p_now_predator[survey_node-1])
                 p_new[survey_node-1]=(0.1*self.p_now_predator[survey_node-1])/p_predator_not_in_survey_node
@@ -200,7 +200,7 @@ class AgentSevenDefectiveDrone:
                 self.p_now_predator=p_new.copy()
             
         else:
-            #2. Prey not found scenario
+            #2. Predator not found scenario
             p_new=[0]*50
 
             p_predator_not_in_survey_node=(1-self.p_now_predator[survey_node-1])+(0.1*self.p_now_predator[survey_node-1])

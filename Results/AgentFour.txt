@@ -156,3 +156,80 @@ Average steps : 22.23Average No. of times Agent was sure about Prey's Location :
 Hang Threshold : 100.00
 
 Execution Time = 58.34775495529175 s
+
+
+======  Start Time  =========->  11/14/22 10:46:31
+No. of Simulations = 30
+No. of trials for each simulation = 100
+Report for Simulation Number 1
+Player Survivability = 94 %
+Report for Simulation Number 2
+Player Survivability = 90 %
+Report for Simulation Number 3
+Player Survivability = 94 %
+Report for Simulation Number 4
+Player Survivability = 91 %
+Report for Simulation Number 5
+Player Survivability = 94 %
+Report for Simulation Number 6
+Player Survivability = 92 %
+Report for Simulation Number 7
+Player Survivability = 91 %
+Report for Simulation Number 8
+Player Survivability = 92 %
+Report for Simulation Number 9
+Player Survivability = 87 %
+Report for Simulation Number 10
+Player Survivability = 87 %
+Report for Simulation Number 11
+Player Survivability = 93 %
+Report for Simulation Number 12
+Player Survivability = 89 %
+Report for Simulation Number 13
+Player Survivability = 91 %
+Report for Simulation Number 14
+Player Survivability = 95 %
+Report for Simulation Number 15
+Player Survivability = 92 %
+Report for Simulation Number 16
+Player Survivability = 94 %
+Report for Simulation Number 17
+Player Survivability = 93 %
+Report for Simulation Number 18
+Player Survivability = 92 %
+Report for Simulation Number 19
+Player Survivability = 88 %
+Report for Simulation Number 20
+Player Survivability = 89 %
+Report for Simulation Number 21
+Player Survivability = 86 %
+Report for Simulation Number 22
+Player Survivability = 91 %
+Report for Simulation Number 23
+Player Survivability = 92 %
+Report for Simulation Number 24
+Player Survivability = 92 %
+Report for Simulation Number 25
+Player Survivability = 89 %
+Report for Simulation Number 26
+Player Survivability = 89 %
+Report for Simulation Number 27
+Player Survivability = 95 %
+Report for Simulation Number 28
+Player Survivability = 97 %
+Report for Simulation Number 29
+Player Survivability = 97 %
+Report for Simulation Number 30
+Player Survivability = 96 %
+
+Summary : 
+Win List : [94, 90, 94, 91, 94, 92, 91, 92, 87, 87, 93, 89, 91, 95, 92, 94, 93, 92, 88, 89, 86, 91, 92, 92, 89, 89, 95, 97, 97, 96]
+Lose List : [6, 10, 6, 9, 6, 8, 9, 8, 13, 13, 7, 11, 9, 5, 8, 6, 7, 8, 12, 11, 14, 9, 8, 8, 11, 11, 5, 3, 3, 4]
+Average wins : 91.73
+Average losses : 8.27
+Average hangs : 0.00
+Average steps : 23.01
+Average No. of times Agent was sure about Prey's Location : 2.041333
+Hang Threshold : 1000.00
+
+Execution Time = 60.31591010093689 s

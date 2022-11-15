@@ -40,8 +40,8 @@ def simulate_agent_one():
         n_win=0     # When agent and prey are in same position, provided pred is not in that position
         n_lose=0    # When agent and predator are in same position
         n_hang=0    # When agent can't catch prey, even after walking a certain threshold distance
-        hang_threshold=100
-        max_steps=300
+        hang_threshold=1000
+        max_steps=1001
         for trial in range(1,n_trials+1):
 
             #generate graph

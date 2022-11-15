@@ -87,7 +87,7 @@ def simulate_agent_nine():
                 # If survey_recheck is true, set survey node of next iteration as 
                 # Update belief system of prey only if not certain
 
-                #========= Agent Eight Simulation  ========
+                #========= Agent Nine Simulation  ========
                 agent_nine.simulate_step(survey_node,prey,predator)
                 # Now we have our agent's next position
                 # ========= Terminal Condition Check  ========

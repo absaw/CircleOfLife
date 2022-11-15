@@ -106,10 +106,13 @@ class Graph:
         # return G
 
     def visualize_graph(self):
-        plt.figure(figsize=(8,6))
-        # pos=nx.circular_layout(G)
-        # nx.draw_networkx(G,pos=pos,with_labels=True,edge_color="Green")
+        # plt.figure(figsize=(2,2))
+        pos=nx.circular_layout(self.G)
+        # nx.draw_networkx_nodes(self.G,pos=pos)
+        # nx.draw_networkx_edges(self.G, pos,connectionstyle="arc2,rad=0.5")
+        nx.draw_networkx(self.G,pos=pos,with_labels=True,edge_color="Green")
         # nx.draw_circular(G,with_labels=True)
+        plt.show()
         nx.draw(self.G,with_labels=True)
         plt.show()
 
@@ -117,3 +120,29 @@ class Graph:
     # for i in range(0,100):
     #     generate_graph(50)
     # generate_graph(50)
+
+if __name__=="__main__":
+    
+    # GraphClass=Graph(50)
+    # G=GraphClass.G
+    # cycles=list(nx.cycle_basis(G.to_undirected()))
+    # # print("Cycle list ->",*cycles)
+    # print("Cycles with length less than 5")
+    # for i in cycles:
+    #     if len(i)<5:
+    #         print(*i)
+            
+    # print("Cycle list ->",list(nx.simple_cycles(G)))
+    # GraphClass.visualize_graph()
+    
+    n_edges=[]
+    for i in range(100000):
+        GraphClass=Graph(50)
+        G=GraphClass.G
+        edge_list=list(G.edges)
+        # print(len(edge_list))
+        n_edges.append(len(edge_list)-50)
+    
+    # print(*n_edges)
+    print("Max =",max(n_edges))
+    print("Min =",min(n_edges))
