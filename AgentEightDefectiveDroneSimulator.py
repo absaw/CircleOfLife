@@ -197,7 +197,7 @@ def simulate_agent_eight_defective_drone():
     # Log file End
     print("Done!")
     
-simulate_agent_eight_defective_drone()
+# simulate_agent_eight_defective_drone()
 
 
                             

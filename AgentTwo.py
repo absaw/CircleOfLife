@@ -175,18 +175,7 @@ class AgentTwo:
                         l2.append(neighbor)
 
                 if not l2:
-                # l3=[]
-                # for neighbor in neighbor_list:
-                #     if cost_matrix[neighbor][0]==d_prey and cost_matrix[neighbor][1]>=d_predator:
-                #         l3.append(neighbor)
                 
-                # if not l3:
-                        # l4=[]
-                        # for neighbor in neighbor_list:
-                        #     if cost_matrix[neighbor][0]==d_prey and cost_matrix[neighbor][1]==d_predator:
-                        #         l4.append(neighbor)
-                        
-                # if not l4:
                     l5=[]
                     for neighbor in neighbor_list:
                         if cost_matrix[neighbor][1]>d_predator:
@@ -223,28 +212,6 @@ class AgentTwo:
                                 next_position=l5[1]
                         else:
                             next_position=l5[0]
-
-                        # else:
-                        #     len_list.append(len(l4))
-                        #     # next_position=random.choice(l4)
-                        #     if len(l4)>1:
-                        #         if self.G.degree(l4[0])>self.G.degree(l4[1]):
-                        #             next_position=l4[0]
-                        #         else:
-                        #             next_position=l4[1]
-                        #     else:
-                        #         next_position=l4[0]
-
-                # else:
-                #     len_list.append(len(l3))
-                #     if len(l3)>1:
-                #         if self.G.degree(l3[0])>self.G.degree(l3[1]):
-                #             next_position=l3[0]
-                #         else:
-                #             next_position=l3[1]
-                #     else:
-                #         next_position=l3[0]
-                        # next_position=random.choice(l3)
 
                 else:
                     len_list.append(len(l2))

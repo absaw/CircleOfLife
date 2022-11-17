@@ -195,7 +195,7 @@ def simulate_agent_seven_defective_drone():
     file.close()
     # Log file End
     print("Done!")
-simulate_agent_seven_defective_drone()
+# simulate_agent_seven_defective_drone()
 
 
                             

@@ -194,7 +194,7 @@ def simulate_agent_eight_dd_without_belief_update():
     file.close()
     # Log file End
     print("Done!")
-simulate_agent_eight_dd_without_belief_update()
+# simulate_agent_eight_dd_without_belief_update()
 
 
                             

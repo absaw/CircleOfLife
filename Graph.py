@@ -136,7 +136,8 @@ if __name__=="__main__":
     # GraphClass.visualize_graph()
     
     n_edges=[]
-    for i in range(100000):
+    #Finding the smallest no. of edges we are always able to add.
+    for i in range(1000000):
         GraphClass=Graph(50)
         G=GraphClass.G
         edge_list=list(G.edges)

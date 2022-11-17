@@ -491,3 +491,154 @@ Average hangs : 0.00
 Hang Threshold : 1000.00
 
 Execution Time = 8.81479287147522 s
+
+
+======  Start Time  =========->  11/16/22 16:55:30
+No. of Simulations = 30
+No. of trials for each simulation = 100
+Report for Simulation Number 1
+Player Survivability = 88 %
+Report for Simulation Number 2
+Player Survivability = 91 %
+Report for Simulation Number 3
+Player Survivability = 90 %
+Report for Simulation Number 4
+Player Survivability = 93 %
+Report for Simulation Number 5
+Player Survivability = 83 %
+Report for Simulation Number 6
+Player Survivability = 93 %
+Report for Simulation Number 7
+Player Survivability = 90 %
+Report for Simulation Number 8
+Player Survivability = 87 %
+Report for Simulation Number 9
+Player Survivability = 88 %
+Report for Simulation Number 10
+Player Survivability = 86 %
+Report for Simulation Number 11
+Player Survivability = 89 %
+Report for Simulation Number 12
+Player Survivability = 87 %
+Report for Simulation Number 13
+Player Survivability = 90 %
+Report for Simulation Number 14
+Player Survivability = 86 %
+Report for Simulation Number 15
+Player Survivability = 91 %
+Report for Simulation Number 16
+Player Survivability = 85 %
+Report for Simulation Number 17
+Player Survivability = 92 %
+Report for Simulation Number 18
+Player Survivability = 88 %
+Report for Simulation Number 19
+Player Survivability = 94 %
+Report for Simulation Number 20
+Player Survivability = 85 %
+Report for Simulation Number 21
+Player Survivability = 92 %
+Report for Simulation Number 22
+Player Survivability = 88 %
+Report for Simulation Number 23
+Player Survivability = 83 %
+Report for Simulation Number 24
+Player Survivability = 85 %
+Report for Simulation Number 25
+Player Survivability = 89 %
+Report for Simulation Number 26
+Player Survivability = 88 %
+Report for Simulation Number 27
+Player Survivability = 86 %
+Report for Simulation Number 28
+Player Survivability = 87 %
+Report for Simulation Number 29
+Player Survivability = 87 %
+Report for Simulation Number 30
+Player Survivability = 90 %
+
+Summary : 
+Win List : [88, 91, 90, 93, 83, 93, 90, 87, 88, 86, 89, 87, 90, 86, 91, 85, 92, 88, 94, 85, 92, 88, 83, 85, 89, 88, 86, 87, 87, 90]
+Lose List : [12, 9, 10, 7, 17, 7, 10, 13, 12, 14, 11, 13, 10, 14, 9, 15, 8, 12, 6, 15, 8, 12, 17, 15, 11, 12, 14, 13, 13, 10]
+Average wins : 88.37
+Average losses : 11.63
+Average hangs : 0.00
+Hang Threshold : 1000.00
+
+Execution Time = 8.640383005142212 s
+
+
+======  Start Time  =========->  11/16/22 17:53:40
+No. of Simulations = 30
+No. of trials for each simulation = 100
+Report for Simulation Number 1
+Player Survivability = 90 %
+Report for Simulation Number 2
+Player Survivability = 88 %
+Report for Simulation Number 3
+Player Survivability = 83 %
+Report for Simulation Number 4
+Player Survivability = 87 %
+Report for Simulation Number 5
+Player Survivability = 92 %
+Report for Simulation Number 6
+Player Survivability = 88 %
+Report for Simulation Number 7
+Player Survivability = 87 %
+Report for Simulation Number 8
+Player Survivability = 88 %
+Report for Simulation Number 9
+Player Survivability = 93 %
+Report for Simulation Number 10
+Player Survivability = 87 %
+Report for Simulation Number 11
+Player Survivability = 88 %
+Report for Simulation Number 12
+Player Survivability = 88 %
+Report for Simulation Number 13
+Player Survivability = 88 %
+Report for Simulation Number 14
+Player Survivability = 95 %
+Report for Simulation Number 15
+Player Survivability = 87 %
+Report for Simulation Number 16
+Player Survivability = 86 %
+Report for Simulation Number 17
+Player Survivability = 87 %
+Report for Simulation Number 18
+Player Survivability = 86 %
+Report for Simulation Number 19
+Player Survivability = 90 %
+Report for Simulation Number 20
+Player Survivability = 93 %
+Report for Simulation Number 21
+Player Survivability = 87 %
+Report for Simulation Number 22
+Player Survivability = 86 %
+Report for Simulation Number 23
+Player Survivability = 87 %
+Report for Simulation Number 24
+Player Survivability = 90 %
+Report for Simulation Number 25
+Player Survivability = 86 %
+Report for Simulation Number 26
+Player Survivability = 89 %
+Report for Simulation Number 27
+Player Survivability = 91 %
+Report for Simulation Number 28
+Player Survivability = 91 %
+Report for Simulation Number 29
+Player Survivability = 88 %
+Report for Simulation Number 30
+Player Survivability = 90 %
+
+Summary : 
+Win List : [90, 88, 83, 87, 92, 88, 87, 88, 93, 87, 88, 88, 88, 95, 87, 86, 87, 86, 90, 93, 87, 86, 87, 90, 86, 89, 91, 91, 88, 90]
+Lose List : [10, 12, 17, 13, 8, 12, 13, 12, 7, 13, 12, 12, 12, 5, 13, 14, 13, 14, 10, 7, 13, 14, 13, 10, 14, 11, 9, 9, 12, 10]
+Average wins : 88.53
+Average losses : 11.47
+Average hangs : 0.00
+Average steps : 11.40
+Hang Threshold : 1000.00
+
+Execution Time = 8.647178173065186 s

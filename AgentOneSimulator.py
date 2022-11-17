@@ -36,12 +36,15 @@ def simulate_agent_one():
     win_list=[]
     lose_list=[]
     hang_list=[]
+    step_list=[]
     for sim in range(1,n_sim+1):
         n_win=0     # When agent and prey are in same position, provided pred is not in that position
         n_lose=0    # When agent and predator are in same position
         n_hang=0    # When agent can't catch prey, even after walking a certain threshold distance
         hang_threshold=1000
         max_steps=1001
+        n_steps=0
+
         for trial in range(1,n_trials+1):
 
             #generate graph
@@ -71,6 +74,7 @@ def simulate_agent_one():
                     break
                 if agent_one.position==prey.position:
                     n_win+=1
+                    n_steps+=steps
                     break
                 # Threshold condition
                 if steps>=hang_threshold:
@@ -87,6 +91,8 @@ def simulate_agent_one():
                     break
                 if agent_one.position==prey.position:
                     n_win+=1
+                    n_steps+=steps
+
                     # print("Goal Reached")
                     break
                 # ======== Predator Simulation   =========
@@ -98,6 +104,8 @@ def simulate_agent_one():
                     break
                 if agent_one.position==prey.position:
                     n_win+=1
+                    n_steps+=steps
+
                     break
 
                 # path.append(next_position)
@@ -110,6 +118,7 @@ def simulate_agent_one():
         win_list.append(n_win)
         lose_list.append(n_lose)
         hang_list.append(n_hang)
+        step_list.append(n_steps/n_win)
         time_now=datetime.now().strftime("%m/%d/%y %H:%M:%S")
         file.write("\nReport for Simulation Number %d" % sim)
         file.write("\nPlayer Survivability = %d" % n_win+" %")
@@ -121,6 +130,7 @@ def simulate_agent_one():
     print("Average wins : ",(sum(win_list)/len(win_list)))
     print("Average losses : ",(sum(lose_list)/len(lose_list)))
     print("Average hangs : ",(sum(hang_list)/len(hang_list)))
+    print("Average steps : ",(sum(step_list)/len(step_list)))
     print("Hang Threshold : ",hang_threshold)
 
     # Log file Start
@@ -130,6 +140,7 @@ def simulate_agent_one():
     file.write("\nAverage wins : %.2f" % (sum(win_list)/len(win_list)))
     file.write("\nAverage losses : %.2f" % (sum(lose_list)/len(lose_list)))
     file.write("\nAverage hangs : %.2f" % (sum(hang_list)/len(hang_list)))
+    file.write("\nAverage steps : %.2f" % (sum(step_list)/len(step_list)))
     file.write("\nHang Threshold : %.2f" % hang_threshold)
     end=time()
     file.write("\n\nExecution Time = "+str(end-start)+" s")
@@ -137,7 +148,7 @@ def simulate_agent_one():
     file.close()
     # Log file End
     print("Done!")
-simulate_agent_one()
+# simulate_agent_one()
 
 
                             

@@ -10,7 +10,13 @@ from AgentFourSimulator import *
 from AgentFiveSimulator import *
 from AgentSixSimulator import *
 from AgentSevenSimulator import *
+from AgentSevenDefectiveDroneSimulator import *
+from AgentSevenSimulatorDefectiveDroneWithoutBeliefUpdate import *
+
 from AgentEightSimulator import *
+from AgentEightDefectiveDroneSimulator import *
+from AgentEightSimulatorDefectiveDroneWithoutBeliefUpdate import *
+from AgentNine import *
 
 if __name__=="__main__":
 
@@ -25,7 +31,13 @@ if __name__=="__main__":
         print(" 5 = Agent Five")
         print(" 6 = Agent Six")
         print(" 7 = Agent Seven")
-        print(" 8 = Agent Eight \n\n")
+        print(" 7b = Agent Seven without belief update")
+        print(" 7c = Agent Seven with belief update")
+        print(" 8 = Agent Eight ")
+        print(" 8b = Agent Eight without belief update ")
+        print(" 8c = Agent Eight with belief update ")
+        print(" 9 = Agent Nine")
+        print(" 0 = Exit\n\n")
         ch=input("Enter choice->> ")
         print()
         if ch=="1":
@@ -49,18 +61,24 @@ if __name__=="__main__":
         elif ch=="7":
             print("Started Agent Seven Simulator->\n")
             simulate_agent_seven()
+        elif ch=="7b":
+            print("Started Agent Seven Defective Drone Simulator without belief update->\n")
+            simulate_agent_seven_dd_without_belief_update()
+        elif ch=="7c":
+            print("Started Agent Seven Defective Drone Simulator with belief update->\n")
+            simulate_agent_seven_defective_drone()
         elif ch=="8":
             print("Started Agent Eight Simulator->\n")
             simulate_agent_eight()
-        elif ch=="7b":
-            print("Started Agent Seven Defective Drone Simulator->\n")
-            # simulate_agent_seven()
         elif ch=="8b":
-            print("Started Agent Eigth Defective Drone Simulator->\n")
-            # simulate_agent_()
+            print("Started Agent Eigth Defective Drone Simulator without belief update->\n")
+            simulate_agent_eight_dd_without_belief_update()
+        elif ch=="8c":
+            print("Started Agent Eigth Defective Drone Simulator with belief update->\n")
+            simulate_agent_eight_defective_drone()
         elif ch=="9":
             print("Started Agent Nine Simulator->\n")
-            # simulate_agent_()
+            simulate_agent_nine()
         elif ch=="0":
             print("Exiting. Thank you! ->\n")
             break
